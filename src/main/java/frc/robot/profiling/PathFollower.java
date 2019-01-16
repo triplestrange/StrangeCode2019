@@ -1,138 +1,65 @@
 package frc.robot.profiling;
 
 import frc.robot.Robot;
-import frc.robot.util.PIDSourceAdapter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
 
 public class PathFollower {
-    ProfileFollower xProfile;
-    ProfileFollower yProfile;
-    ProfileFollower zProfile;
-    ProfileFollower parProfile, perpProfile;
-    double xPower, yPower, zPower;
-    double parPower, perpPower;
-    SwerveTrajectory currentTrajectory;
+    ProfileFollower parFollower, perpFollower, rotFollower;
+    SwerveTrajectory trajectory;
+    int currentWaypoint;
     long startTime;
-    double kP = 0.0007;
-    double kD = 0.00005;
 
     public PathFollower() {
-        this.zProfile = new ProfileFollower(.002, 0, 0.02, 0, 0.002, new PIDSourceAdapter(() -> Robot.path.currentZ),
-                (z) -> zPower = z);
-        this.parProfile = new ProfileFollower(.008, 0.005, 0.1, 0, 0.01, new PIDSourceAdapter(() -> 0.0),
-                (y) -> parPower = y);
-        this.perpProfile = new ProfileFollower(0, 0, 0.05, 0, 0.0, new PIDSourceAdapter(() -> 0.0),
-                (x) -> perpPower = x);
+        this.rotFollower = new ProfileFollower(.002, 0, 0.02, 0, 0.002);
+        this.parFollower = new ProfileFollower(.008, 0.005, 0.1, 0, 0.01);
+        this.perpFollower = new ProfileFollower(0, 0, 0.05, 0, 0.0);
         if (!SmartDashboard.containsKey("zP"))
-            SmartDashboard.putNumber("zP", zProfile.kP);
+            SmartDashboard.putNumber("zP", rotFollower.kP);
         if (!SmartDashboard.containsKey("zD"))
-            SmartDashboard.putNumber("zD", zProfile.kD);
+            SmartDashboard.putNumber("zD", rotFollower.kD);
         if (!SmartDashboard.containsKey("zV"))
-            SmartDashboard.putNumber("zV", zProfile.kV);
+            SmartDashboard.putNumber("zV", rotFollower.kV);
         if (!SmartDashboard.containsKey("parP"))
-            SmartDashboard.putNumber("parP", parProfile.kP);
+            SmartDashboard.putNumber("parP", parFollower.kP);
         if (!SmartDashboard.containsKey("parD"))
-            SmartDashboard.putNumber("parD", parProfile.kD);
+            SmartDashboard.putNumber("parD", parFollower.kD);
         if (!SmartDashboard.containsKey("perpP"))
-            SmartDashboard.putNumber("perpP", perpProfile.kP);
+            SmartDashboard.putNumber("perpP", perpFollower.kP);
         if (!SmartDashboard.containsKey("perpD"))
-            SmartDashboard.putNumber("perpD", perpProfile.kD);
+            SmartDashboard.putNumber("perpD", perpFollower.kD);
     }
 
     private double totalTime(Trajectory t) {
         return t.get(0).dt * (t.length() - 1);
     }
 
-    public Trajectory.Segment currentSegment(double time) {
-        if (currentTrajectory == null)
-            return null;
+    public Trajectory.Segment currentSegment(double t) {
+        if (trajectory == null) return null;
         try {
-            return currentTrajectory
-                    .get((int) Math.round(time / totalTime(currentTrajectory) * currentTrajectory.length()));
+            return trajectory
+                    .get((int) Math.round(t / totalTime(trajectory) * trajectory.length()));
         } catch (IndexOutOfBoundsException e) {
-            return currentTrajectory.get(currentTrajectory.length() - 1);
+            return trajectory.get(trajectory.length() - 1);
         }
     }
 
     public void startTrajectory(SwerveTrajectory t) {
-        zProfile.kP = SmartDashboard.getNumber("zP", zProfile.kP);
-        zProfile.kD = SmartDashboard.getNumber("zD", zProfile.kD);
-        zProfile.kV = SmartDashboard.getNumber("zV", zProfile.kV);
-        parProfile.kP = SmartDashboard.getNumber("parP", parProfile.kP);
-        parProfile.kD = SmartDashboard.getNumber("parD", parProfile.kD);
-        perpProfile.kP = SmartDashboard.getNumber("perpP", perpProfile.kP);
-        perpProfile.kD = SmartDashboard.getNumber("perpD", perpProfile.kD);
-        currentTrajectory = t;
+        rotFollower.kP = SmartDashboard.getNumber("zP", rotFollower.kP);
+        rotFollower.kD = SmartDashboard.getNumber("zD", rotFollower.kD);
+        rotFollower.kV = SmartDashboard.getNumber("zV", rotFollower.kV);
+        parFollower.kP = SmartDashboard.getNumber("parP", parFollower.kP);
+        parFollower.kD = SmartDashboard.getNumber("parD", parFollower.kD);
+        perpFollower.kP = SmartDashboard.getNumber("perpP", perpFollower.kP);
+        perpFollower.kD = SmartDashboard.getNumber("perpD", perpFollower.kD);
+        trajectory = t;
         startTime = System.nanoTime();
+        currentWaypoint = 0;
 
-        parProfile.startProfile(new MotionProfile() {
-            public double currentP(double t) {
-                return (currentSegment(t).x - Robot.path.currentX) * Math.cos(currentSegment(t).heading)
-                        + (currentSegment(t).y - Robot.path.currentY) * Math.sin(currentSegment(t).heading);
-            }
-
-            public double currentV(double t) {
-                Trajectory.Segment cs = currentSegment(t);
-                return cs.velocity;
-            }
-
-            public double totalTime() {
-                return PathFollower.this.totalTime(currentTrajectory);
-            }
-
-            public double currentA(double t) {
-                Trajectory.Segment cs = currentSegment(t);
-                return cs.acceleration;
-            }
-        });
-        perpProfile.startProfile(new MotionProfile() {
-            public double currentP(double t) {
-                return -(currentSegment(t).x - Robot.path.currentX) * Math.sin(currentSegment(t).heading)
-                        + (currentSegment(t).y - Robot.path.currentY) * Math.cos(currentSegment(t).heading);
-            }
-
-            public double currentV(double t) {
-                return 0.0;
-            }
-
-            public double totalTime() {
-                return PathFollower.this.totalTime(currentTrajectory);
-            }
-
-            public double currentA(double t) {
-                return 0.0;
-            }
-        });
-        zProfile.startProfile(new MotionProfile() {
-            int currentWaypoint = 0;
-
-            public double currentP(double t) {
-                if (t >= currentTrajectory.waypointTime[currentWaypoint + 1]
-                        && currentWaypoint < currentTrajectory.waypoints.length - 2) {
-                    currentWaypoint = currentWaypoint + 1;
-                }
-                double angle = currentTrajectory.gyroProfile[currentWaypoint]
-                        .currentP(t - currentTrajectory.waypointTime[currentWaypoint]);
-
-                SmartDashboard.putNumber("zProfileTargetP", angle);
-                return angle;
-            }
-
-            public double currentV(double t) {
-                return currentTrajectory.gyroProfile[currentWaypoint]
-                        .currentV(t - currentTrajectory.waypointTime[currentWaypoint]);
-            }
-
-            public double totalTime() {
-                return PathFollower.this.totalTime(currentTrajectory);
-            }
-
-            public double currentA(double t) {
-                return 0;
-            }
-        });
+        parFollower.resetPID();
+        perpFollower.resetPID();
+        rotFollower.resetPID();
     }
 
     public void update() {
@@ -140,32 +67,46 @@ public class PathFollower {
             Robot.swerve.driveField(0, 0, 0);
             return;
         } else {
-            double currentTime = (System.nanoTime() - startTime) / 1e9;
-            zProfile.update();
-            parProfile.update();
-            perpProfile.update();
-            yPower = perpPower * Math.cos(currentSegment(currentTime).heading)
-                    + parPower * Math.sin(currentSegment(currentTime).heading);
-            xPower = -perpPower * Math.sin(currentSegment(currentTime).heading)
-                    + parPower * Math.cos(currentSegment(currentTime).heading);
-            Robot.swerve.driveField(xPower, yPower, zPower);
+            double t = (System.nanoTime() - startTime) / 1e9;
+
+            // update translational motion
+            Trajectory.Segment seg = currentSegment(t);
+            double sin = Math.sin(seg.heading);
+            double cos = Math.cos(seg.heading);
+            double xErr = seg.x - Robot.path.currentX;
+            double yErr = seg.y - Robot.path.currentY;
+            // rotate (x,y) by -heading to get (par,perp)
+            double parErr = xErr * cos + yErr * sin;
+            double perpErr = -xErr * sin + yErr * cos;
+
+            double parPower = parFollower.update(0, parErr, seg.velocity, seg.acceleration);
+            double perpPower = perpFollower.update(0, perpErr, 0, 0);
+
+            // rotate (par,perp) by heading to get (x,y)
+            double xPower = parPower * cos - perpPower * sin;
+            double yPower = parPower * sin + perpPower * cos;
+
+            // update rotational motion
+            if (t >= trajectory.waypointTime[currentWaypoint + 1]
+                    && currentWaypoint < trajectory.waypoints.length - 2) {
+                currentWaypoint++;
+            }
+            MotionProfile rotProfile = trajectory.gyroProfile[currentWaypoint];
+            double rotProfileTime = t - trajectory.waypointTime[currentWaypoint];
+            double rotPower = rotFollower.update(Robot.path.currentZ, 
+                                                 rotProfile.currentP(rotProfileTime),
+                                                 rotProfile.currentV(rotProfileTime),
+                                                 rotProfile.currentA(rotProfileTime));
+
+            Robot.swerve.driveField(xPower, yPower, rotPower);
         }
     }
 
     public void cancel() {
-        currentTrajectory = null;
-        zProfile.cancel();
-        parProfile.cancel();
-        perpProfile.cancel();
+        trajectory = null;
     }
 
     public boolean isFinished() {
-        if (currentTrajectory == null) {
-            return true;
-        } else if (parProfile.isFinished() && perpProfile.isFinished() && zProfile.isFinished()) {
-            return true;
-        } else {
-            return false;
-        }
+        return trajectory == null || (System.nanoTime() - startTime) / 1e9 > totalTime(trajectory);
     }
 }
