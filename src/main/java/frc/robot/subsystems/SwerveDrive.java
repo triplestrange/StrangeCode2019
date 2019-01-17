@@ -74,8 +74,8 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
                     new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
                     new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
                     RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
-    private double pivX, pivY, transAngle, mpangle, gyroangle, speed = 70, turnRate = 70;
-    private boolean drivingField;
+    private double pivX, pivY, transAngle, mpangle, gyroangle, speed = 75, turnRate = 75;
+    private boolean drivingField = true;
 
     public SwerveDrive(Gyro navxGyro) {
         enable();

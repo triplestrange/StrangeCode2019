@@ -19,6 +19,6 @@ public class SwerveSetHighSpeed extends Command {
 
     @Override
     public void end() {
-        Robot.swerve.setSpeed(70, 70);
+        Robot.swerve.setSpeed(75, 75);
     }
 }
