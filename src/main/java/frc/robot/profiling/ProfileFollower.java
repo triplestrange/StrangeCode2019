@@ -53,7 +53,7 @@ public class ProfileFollower {
 
     public double update(double pos, double profilePos, double profileVel, double profileAccel) {
         double t = (System.nanoTime() - startTime) / 1e9;
-        double dt = Math.max(0.001, Math.min(0.1, t - prevTime));
+        double dt = Math.max(0.0001, Math.min(0.1, t - prevTime));
 
         double error = profilePos - pos;
         double deriv = (error - prevError) / dt;

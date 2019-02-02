@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -75,7 +76,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
                     new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
                     RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
     private double pivX, pivY, transAngle, mpangle, gyroangle, speed = 75, turnRate = 75;
-    private boolean drivingField = true;
+    private boolean drivingField = false;
 
     public SwerveDrive(Gyro navxGyro) {
         enable();
@@ -208,7 +209,14 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     }
 
     public void setField() {
-        this.drivingField = !drivingField;
+        this.drivingField =! drivingField;
+    }
+    public void setFieldOn() {
+        this.drivingField = true;
+    }
+
+    public void setFieldOff() {
+        this.drivingField = false;
     }
 
     public void move() {
@@ -236,7 +244,11 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putNumber("FR", modules[1].getAngle() * 360 / (2 * Math.PI));
         SmartDashboard.putNumber("BL", modules[2].getAngle() * 360 / (2 * Math.PI));
         SmartDashboard.putNumber("BR", modules[3].getAngle() * 360 / (2 * Math.PI));
-        SmartDashboard.putNumber("FLdrive", modules[1].driveController.get());
+        SmartDashboard.putNumber("DriveDistance", modules[1].getDistance());
+        SmartDashboard.putBoolean("FieldOrient", drivingField);
+        SmartDashboard.putNumber("Gyro", navx.getAngle());
+        SmartDashboard.putNumber("CurrentLimit", modules[0].driveController.getRampRate());
+        SmartDashboard.putBoolean("ControlMode", modules[0].driveController.getParameterInt(ConfigParameter.kCtrlType).isEmpty());
     }
 
     public void runProfile(double angle, TrapezoidProfile profile) {

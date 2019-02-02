@@ -3,11 +3,12 @@ package frc.robot.subsystems;
 import frc.robot.RobotMap;
 import frc.robot.profiling.TrapezoidProfile;
 import frc.robot.profiling.ProfileFollower;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
+
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -22,7 +23,7 @@ public class SwerveModule implements PIDSource, PIDOutput {
     public double positionX, positionY;
     private boolean enabled;
     public ProfileFollower swerveMP = new ProfileFollower(.008, 0.0, 0.15, 0, 0.02, this, this);
-    public static double distPerPulse = 100.0 / 187510 * 212 / 200;
+    public static double distPerRev = (4*Math.PI)/6;
     double distZero;
 
     public SwerveModule(CANSparkMax driveController, WPI_VictorSPX steerController, AbsoluteEncoder steerEncoder,
@@ -38,6 +39,11 @@ public class SwerveModule implements PIDSource, PIDOutput {
         steerPID.setOutputRange(-RobotMap.SwerveDrive.SWERVE_STEER_CAP, RobotMap.SwerveDrive.SWERVE_STEER_CAP);
         steerPID.setContinuous();
         steerPID.disable();
+        driveController.setRampRate(0);
+        driveController.setIdleMode(IdleMode.kBrake);
+        driveController.setSmartCurrentLimit(40);
+        driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
+        driveController.burnFlash();
         // driveController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
         // 0, 0);
         // driveController.setSensorPhase(true);
@@ -116,7 +122,7 @@ public class SwerveModule implements PIDSource, PIDOutput {
     public double getDistance() {
         // return driveController.getSelectedSensorPosition(0) * distPerPulse -
         // distZero;
-        return driveController.getEncoder().getPosition() * distPerPulse - distZero;
+        return driveController.getEncoder().getPosition() * distPerRev - distZero;
     }
 
     public double pidGet() {

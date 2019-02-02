@@ -17,11 +17,12 @@ public class PathTracking {
     public double[] lastSteer;
     double timeIter;
     SwerveDrive swerve;
-    Gyro gyro;
+    Gyro navx;
     PrintWriter writer;
 
-    public PathTracking(SwerveDrive modules) {
+    public PathTracking(SwerveDrive modules, Gyro navx) {
         this.swerve = modules;
+        this.navx = navx;
         drive = new double[swerve.modules.length];
         lastSteer = new double[swerve.modules.length];
         // try {
@@ -48,18 +49,18 @@ public class PathTracking {
             double dEncoder = swerve.modules[i].getDistance();
             double sEncoder = swerve.modules[i].getAngle();
             double deltaSteer = Pathfinder.boundHalfDegrees(Pathfinder.r2d(sEncoder - lastSteer[i]));
-            double deltaDrive = dEncoder - drive[i] + deltaSteer / 360 * 12288 * SwerveModule.distPerPulse;
+            double deltaDrive = dEncoder - drive[i] + deltaSteer / 360 * 3 * SwerveModule.distPerRev;
 
             double dx = -(deltaDrive) * Math.sin(sEncoder)
-                    - swerve.modules[i].positionY * (Math.toRadians(gyro.getAngle() - currentZ));
+                    - swerve.modules[i].positionY * (Math.toRadians(navx.getAngle() - currentZ));
             double dy = (deltaDrive) * Math.cos(sEncoder)
-                    + swerve.modules[i].positionX * (Math.toRadians(gyro.getAngle() - currentZ));
+                    + swerve.modules[i].positionX * (Math.toRadians(navx.getAngle() - currentZ));
             xAvg = xAvg + dx / swerve.modules.length;
             yAvg = yAvg + dy / swerve.modules.length;
             drive[i] = dEncoder;
             lastSteer[i] = sEncoder;
         }
-        currentZ = gyro.getAngle();
+        currentZ = navx.getAngle();
         currentX = currentX + xAvg * Math.cos(Math.toRadians(currentZ)) + yAvg * Math.sin(Math.toRadians(currentZ));
         currentY = currentY - xAvg * Math.sin(Math.toRadians(currentZ)) + yAvg * Math.cos(Math.toRadians(currentZ));
 

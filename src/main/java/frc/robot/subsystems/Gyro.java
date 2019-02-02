@@ -20,7 +20,7 @@ public class Gyro {
     }
 
     public void reset() {
-        gyro.reset();
+        gyro.zeroYaw();
         offset = 0;
     }
 
