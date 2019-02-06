@@ -203,6 +203,9 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         modules[3].set(45, 0);
     }
 
+    public void autoRotate(double speed, double angle) {
+        
+    }
     public void setSpeed(double drive, double rotation) {
         this.speed = drive;
         this.turnRate = rotation;

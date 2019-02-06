@@ -20,8 +20,8 @@ public class Robot extends TimedRobot {
     public static PathTracking path;
     public static PathFollower follower;
     public static Command autoCommand;
-    public static boolean Tape;
-    public static PowerDistributionPanel pdp;
+    // public static boolean Tape;
+    // public static PowerDistributionPanel pdp;
 
     public void robotInit() {
         navxGyro = new Gyro();
@@ -31,19 +31,20 @@ public class Robot extends TimedRobot {
         follower = new PathFollower();
         m_oi = new OI();
         autoCommand = new PathTesting();
-        pdp = new PowerDistributionPanel();
-        Tape = true;
+        // pdp = new PowerDistributionPanel();
+        // Tape = true;
     }
 
     @Override
     public void robotPeriodic() {
         path.update();
         swerve.smartDash();
-        SmartDashboard.putBoolean("Tape", Tape);
-        SmartDashboard.putNumber("Motor 0", pdp.getCurrent(0));
-        SmartDashboard.putNumber("Motor 1", pdp.getCurrent(1));
-        SmartDashboard.putNumber("Motor 2", pdp.getCurrent(14));
-        SmartDashboard.putNumber("Motor 3", pdp.getCurrent(15));
+        Scheduler.getInstance().run();
+        // SmartDashboard.putBoolean("Tape", Tape);
+        // SmartDashboard.putNumber("Motor 0", pdp.getCurrent(0));
+        // SmartDashboard.putNumber("Motor 1", pdp.getCurrent(1));
+        // SmartDashboard.putNumber("Motor 2", pdp.getCurrent(14));
+        // SmartDashboard.putNumber("Motor 3", pdp.getCurrent(15));
     }
 
     @Override
@@ -54,7 +55,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
     }
 
     @Override
@@ -64,7 +64,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
     }
 
     @Override

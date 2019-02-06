@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj.*;
  */
 public class SwerveModule implements PIDSource, PIDOutput {
     private PIDController steerPID;
-    protected CANSparkMax driveController;
+    public CANSparkMax driveController;
     // protected WPI_TalonSRX driveController;
-    protected WPI_VictorSPX steerController;
+    public WPI_VictorSPX steerController;
     private AbsoluteEncoder steerEncoder;
     public double positionX, positionY;
     private boolean enabled;

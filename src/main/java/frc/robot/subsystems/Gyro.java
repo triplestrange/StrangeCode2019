@@ -29,6 +29,9 @@ public class Gyro {
         offset = angle;
     }
 
+    public double pidGet() {
+        return getAngle();
+    }
     // public static double angleCorrect() {
     // return gyro.getAngle() * -.025;
     // }
