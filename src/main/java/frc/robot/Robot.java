@@ -30,9 +30,7 @@ public class Robot extends TimedRobot {
         path = new PathTracking(swerve, navxGyro);
         follower = new PathFollower();
         m_oi = new OI();
-        autoCommand = new PathTesting();
-        // pdp = new PowerDistributionPanel();
-        // Tape = true;
+        autoCommand = new PathTesting();;
     }
 
     @Override
@@ -40,11 +38,6 @@ public class Robot extends TimedRobot {
         path.update();
         swerve.smartDash();
         Scheduler.getInstance().run();
-        // SmartDashboard.putBoolean("Tape", Tape);
-        // SmartDashboard.putNumber("Motor 0", pdp.getCurrent(0));
-        // SmartDashboard.putNumber("Motor 1", pdp.getCurrent(1));
-        // SmartDashboard.putNumber("Motor 2", pdp.getCurrent(14));
-        // SmartDashboard.putNumber("Motor 3", pdp.getCurrent(15));
     }
 
     @Override

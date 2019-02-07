@@ -26,55 +26,55 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     private Vector2D tankVector2D;
     private Gyro navx;
     public final SwerveModule[] modules = new SwerveModule[] {
-            // // front left swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.FL_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.FL_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.FL_ENCODER,
-            // RobotMap.SwerveDrive.FL_ENC_OFFSET),
-            // -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // // front right swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.FR_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.FR_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.FR_ENCODER,
-            // RobotMap.SwerveDrive.FR_ENC_OFFSET),
-            // RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // // back left swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.BL_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.BL_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.BL_ENCODER,
-            // RobotMap.SwerveDrive.BL_ENC_OFFSET),
-            // -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // // back right swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.BR_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER,
-            // RobotMap.SwerveDrive.BR_ENC_OFFSET),
-            // RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
+            // front left swerve module
+            new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.FL_DRIVE),
+            new WPI_VictorSPX(RobotMap.SwerveDrive.FL_STEER),
+            new AbsoluteEncoder(RobotMap.SwerveDrive.FL_ENCODER,
+            RobotMap.SwerveDrive.FL_ENC_OFFSET),
+            -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
+            RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
+            // front right swerve module
+            new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.FR_DRIVE),
+            new WPI_VictorSPX(RobotMap.SwerveDrive.FR_STEER),
+            new AbsoluteEncoder(RobotMap.SwerveDrive.FR_ENCODER,
+            RobotMap.SwerveDrive.FR_ENC_OFFSET),
+            RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
+            RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
+            // back left swerve module
+            new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.BL_DRIVE),
+            new WPI_VictorSPX(RobotMap.SwerveDrive.BL_STEER),
+            new AbsoluteEncoder(RobotMap.SwerveDrive.BL_ENCODER,
+            RobotMap.SwerveDrive.BL_ENC_OFFSET),
+            -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
+            -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
+            // back right swerve module
+            new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.BR_DRIVE),
+            new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
+            new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER,
+            RobotMap.SwerveDrive.BR_ENC_OFFSET),
+            RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
+            -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
 
             // front left swerve module
-            new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.FL_DRIVE, MotorType.kBrushless),
-                    new WPI_VictorSPX(RobotMap.SwerveDrive.FL_STEER),
-                    new AbsoluteEncoder(RobotMap.SwerveDrive.FL_ENCODER, RobotMap.SwerveDrive.FL_ENC_OFFSET),
-                    -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // front right swerve module
-            new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.FR_DRIVE, MotorType.kBrushless),
-                    new WPI_VictorSPX(RobotMap.SwerveDrive.FR_STEER),
-                    new AbsoluteEncoder(RobotMap.SwerveDrive.FR_ENCODER, RobotMap.SwerveDrive.FR_ENC_OFFSET),
-                    RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // back left swerve module
-            new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.BL_DRIVE, MotorType.kBrushless),
-                    new WPI_VictorSPX(RobotMap.SwerveDrive.BL_STEER),
-                    new AbsoluteEncoder(RobotMap.SwerveDrive.BL_ENCODER, RobotMap.SwerveDrive.BL_ENC_OFFSET),
-                    -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // back right swerve module
-            new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.BR_DRIVE, MotorType.kBrushless),
-                    new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
-                    new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
-                    RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
+            // new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.FL_DRIVE, MotorType.kBrushless),
+            //         new WPI_VictorSPX(RobotMap.SwerveDrive.FL_STEER),
+            //         new AbsoluteEncoder(RobotMap.SwerveDrive.FL_ENCODER, RobotMap.SwerveDrive.FL_ENC_OFFSET),
+            //         -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
+            // // front right swerve module
+            // new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.FR_DRIVE, MotorType.kBrushless),
+            //         new WPI_VictorSPX(RobotMap.SwerveDrive.FR_STEER),
+            //         new AbsoluteEncoder(RobotMap.SwerveDrive.FR_ENCODER, RobotMap.SwerveDrive.FR_ENC_OFFSET),
+            //         RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
+            // // back left swerve module
+            // new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.BL_DRIVE, MotorType.kBrushless),
+            //         new WPI_VictorSPX(RobotMap.SwerveDrive.BL_STEER),
+            //         new AbsoluteEncoder(RobotMap.SwerveDrive.BL_ENCODER, RobotMap.SwerveDrive.BL_ENC_OFFSET),
+            //         -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
+            // // back right swerve module
+            // new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.BR_DRIVE, MotorType.kBrushless),
+            //         new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
+            //         new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
+            //         RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
     private double pivX, pivY, transAngle, mpangle, gyroangle, speed = 75, turnRate = 75;
     private boolean drivingField = false;
 
@@ -204,7 +204,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     }
 
     public void autoRotate(double speed, double angle) {
-        
+
     }
     public void setSpeed(double drive, double rotation) {
         this.speed = drive;
@@ -250,8 +250,8 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putNumber("DriveDistance", modules[1].getDistance());
         SmartDashboard.putBoolean("FieldOrient", drivingField);
         SmartDashboard.putNumber("Gyro", navx.getAngle());
-        SmartDashboard.putNumber("CurrentLimit", modules[0].driveController.getRampRate());
-        SmartDashboard.putBoolean("ControlMode", modules[0].driveController.getParameterInt(ConfigParameter.kCtrlType).isEmpty());
+        // SmartDashboard.putNumber("CurrentLimit", modules[0].driveController.getRampRate());
+        // SmartDashboard.putBoolean("ControlMode", modules[0].driveController.getParameterInt(ConfigParameter.kCtrlType).isEmpty());
     }
 
     public void runProfile(double angle, TrapezoidProfile profile) {

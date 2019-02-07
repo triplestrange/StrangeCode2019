@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import frc.robot.RobotMap;
 import frc.robot.profiling.TrapezoidProfile;
 import frc.robot.profiling.ProfileFollower;
+
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -16,17 +19,18 @@ import edu.wpi.first.wpilibj.*;
  */
 public class SwerveModule implements PIDSource, PIDOutput {
     private PIDController steerPID;
-    public CANSparkMax driveController;
-    // protected WPI_TalonSRX driveController;
+    // public CANSparkMax driveController;
+    protected WPI_TalonSRX driveController;
     public WPI_VictorSPX steerController;
     private AbsoluteEncoder steerEncoder;
     public double positionX, positionY;
     private boolean enabled;
     public ProfileFollower swerveMP = new ProfileFollower(.008, 0.0, 0.15, 0, 0.02, this, this);
-    public static double distPerRev = (4*Math.PI)/6;
+    public static double distPerRev = (4 * Math.PI) / 6;
+    public int distPerPulse = 1;
     double distZero;
 
-    public SwerveModule(CANSparkMax driveController, WPI_VictorSPX steerController, AbsoluteEncoder steerEncoder,
+    public SwerveModule(WPI_TalonSRX driveController, WPI_VictorSPX steerController, AbsoluteEncoder steerEncoder,
             double positionX, double positionY) {
         this.steerController = steerController;
         this.driveController = driveController;
@@ -39,14 +43,14 @@ public class SwerveModule implements PIDSource, PIDOutput {
         steerPID.setOutputRange(-RobotMap.SwerveDrive.SWERVE_STEER_CAP, RobotMap.SwerveDrive.SWERVE_STEER_CAP);
         steerPID.setContinuous();
         steerPID.disable();
-        driveController.setRampRate(0);
-        driveController.setIdleMode(IdleMode.kBrake);
-        driveController.setSmartCurrentLimit(40);
-        driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
-        driveController.burnFlash();
-        // driveController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-        // 0, 0);
-        // driveController.setSensorPhase(true);
+        // driveController.setRampRate(0);
+        // driveController.setIdleMode(IdleMode.kBrake);
+        // driveController.setSmartCurrentLimit(40);
+        // driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
+        // driveController.burnFlash();
+        driveController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        0, 0);
+        driveController.setSensorPhase(true);
         resetEncoder();
     }
 
@@ -120,9 +124,9 @@ public class SwerveModule implements PIDSource, PIDOutput {
     }
 
     public double getDistance() {
-        // return driveController.getSelectedSensorPosition(0) * distPerPulse -
-        // distZero;
-        return driveController.getEncoder().getPosition() * distPerRev - distZero;
+        return driveController.getSelectedSensorPosition(0) * distPerPulse -
+        distZero;
+        // return driveController.getEncoder().getPosition() * distPerRev - distZero;
     }
 
     public double pidGet() {

@@ -7,7 +7,6 @@ import frc.robot.Robot;
 
 public class SwerveRotate extends Command{
     private double angle, speed;
-    private PIDController rotatePID;
     
 
     public SwerveRotate(double angle, double speed) {
