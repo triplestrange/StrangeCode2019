@@ -3,7 +3,6 @@ package frc.robot.commands;
 import frc.robot.Robot;
 import frc.robot.profiling.SwerveTrajectory;
 import frc.robot.profiling.SwerveWaypoint;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Trajectory;

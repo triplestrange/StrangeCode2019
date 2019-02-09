@@ -8,17 +8,18 @@ import frc.robot.profiling.ProfileFollower;
 import frc.robot.subsystems.Gyro;
 import frc.robot.util.*;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
@@ -26,35 +27,6 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     private Vector2D tankVector2D;
     private Gyro navx;
     public final SwerveModule[] modules = new SwerveModule[] {
-            // // front left swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.FL_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.FL_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.FL_ENCODER,
-            // RobotMap.SwerveDrive.FL_ENC_OFFSET),
-            // -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // // front right swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.FR_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.FR_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.FR_ENCODER,
-            // RobotMap.SwerveDrive.FR_ENC_OFFSET),
-            // RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // // back left swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.BL_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.BL_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.BL_ENCODER,
-            // RobotMap.SwerveDrive.BL_ENC_OFFSET),
-            // -RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2),
-            // // back right swerve module
-            // new SwerveModule(new WPI_TalonSRX(RobotMap.SwerveDrive.BR_DRIVE),
-            // new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
-            // new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER,
-            // RobotMap.SwerveDrive.BR_ENC_OFFSET),
-            // RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2,
-            // -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
-
             // front left swerve module
             new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.FL_DRIVE, MotorType.kBrushless),
                     new WPI_VictorSPX(RobotMap.SwerveDrive.FL_STEER),
@@ -76,7 +48,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
                     new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
                     RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
     private double pivX, pivY, transAngle, mpangle, gyroangle, speed = 75, turnRate = 75;
-    private boolean drivingField = false;
+    private boolean drivingField = true, visionOn = false;
 
     public SwerveDrive(Gyro navxGyro) {
         enable();
@@ -148,6 +120,14 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         }
     }
 
+    /*****************************************************************************************/
+    public void driveWithVision(double yaw) {
+        double magnitude = Math.abs(-Robot.joy1.getY() * speed) / 100;
+        driveWithOrient(0, magnitude, (yaw / 100), false);
+
+    }
+    /*****************************************************************************************/
+    
     public void setTrans(Vector2D vector) {
         this.tankVector2D = vector;
     }
@@ -203,23 +183,17 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         modules[3].set(45, 0);
     }
 
-    public void autoRotate(double speed, double angle) {
-        
-    }
     public void setSpeed(double drive, double rotation) {
         this.speed = drive;
         this.turnRate = rotation;
     }
 
     public void setField() {
-        this.drivingField =! drivingField;
+        this.drivingField = !drivingField;
     }
-    public void setFieldOn() {
-        this.drivingField = true;
-    }
-
-    public void setFieldOff() {
-        this.drivingField = false;
+    
+    public void setVision() {
+        this.visionOn = !visionOn;
     }
 
     public void move() {
@@ -236,6 +210,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         else
             driveNormal(0, 0, 0);
     }
+
 
     public void stop(int module) {
         modules[module].driveController.set(0);

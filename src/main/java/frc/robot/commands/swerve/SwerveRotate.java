@@ -1,13 +1,10 @@
 package frc.robot.commands.swerve;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDInterface;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class SwerveRotate extends Command{
     private double angle, speed;
-    private PIDController rotatePID;
     
 
     public SwerveRotate(double angle, double speed) {
