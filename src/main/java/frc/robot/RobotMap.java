@@ -66,4 +66,16 @@ public class RobotMap {
         public final static int BACK = 9;
         public final static int START = 10;
     }
+
+    public static class Elevator {
+		public static final int elevator1 = 8;
+		public static final int elevator2 = 9;
+				
+		public static final int MagEncoderPort1 = 0;
+		public static final int MagEncoderPort2 = 1;
+    }
+    
+    public static class HatchIntake {
+        public static final int hatchMotor = 9; // ?
+    }
 }
