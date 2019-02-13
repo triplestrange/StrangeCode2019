@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.auto.PathTesting;
 import frc.robot.profiling.PathFollower;
@@ -16,6 +17,7 @@ public class Robot extends TimedRobot {
     public static Joystick joy1, joy2;
     public static OI m_oi;
     public static SwerveDrive swerve;
+    public static Hatch hatch;
     public static Gyro navxGyro;
     public static PathTracking path;
     public static PathFollower follower;
@@ -26,6 +28,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         navxGyro = new Gyro();
         swerve = new SwerveDrive(navxGyro);
+        hatch = new Hatch();
         joy1 = new Joystick(0);
         path = new PathTracking(swerve, navxGyro);
         follower = new PathFollower();
