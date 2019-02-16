@@ -3,7 +3,6 @@ package frc.robot.commands;
 import frc.robot.Robot;
 import frc.robot.profiling.SwerveTrajectory;
 import frc.robot.profiling.SwerveWaypoint;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Trajectory;
@@ -16,10 +15,21 @@ public class PathCommand extends Command {
     double angularAcc = 180;
     SwerveWaypoint[] waypoints;
     SwerveTrajectory traj;
+    double initX, initY;
 
     public PathCommand(SwerveWaypoint... waypoints) {
         requires(Robot.swerve);
         this.waypoints = waypoints;
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
+                Trajectory.Config.SAMPLES_LOW, 0.05, speed, acc, 100.0);
+        traj = SwerveTrajectory.generate(config, waypoints, rotVel, angularAcc);
+    }
+
+    public PathCommand(double initX, double initY, SwerveWaypoint... waypoints) {
+        requires(Robot.swerve);
+        this.waypoints = waypoints;
+        this.initX = initX;
+        this.initY = initY;
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
                 Trajectory.Config.SAMPLES_LOW, 0.05, speed, acc, 100.0);
         traj = SwerveTrajectory.generate(config, waypoints, rotVel, angularAcc);
@@ -36,7 +46,7 @@ public class PathCommand extends Command {
     }
 
     public void initialize() {
-        Robot.path.reset();
+        Robot.path.setCoords(initX, initY);
         Robot.follower.startTrajectory(traj);
     }
 

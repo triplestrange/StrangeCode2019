@@ -1,8 +1,5 @@
 package frc.robot.profiling;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SwerveModule;
@@ -18,19 +15,12 @@ public class PathTracking {
     double timeIter;
     SwerveDrive swerve;
     Gyro navx;
-    PrintWriter writer;
 
     public PathTracking(SwerveDrive modules, Gyro navx) {
         this.swerve = modules;
         this.navx = navx;
         drive = new double[swerve.modules.length];
         lastSteer = new double[swerve.modules.length];
-        // try {
-        // //writer = new PrintWriter("robot.txt");
-        // } catch (FileNotFoundException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
     }
 
     public void reset() {
@@ -42,6 +32,10 @@ public class PathTracking {
         }
     }
 
+    public void setCoords(double currentX, double currentY) {
+        this.currentX = currentX;
+        this.currentY = currentY;
+    }
     public void update() {
         double xAvg = 0;
         double yAvg = 0;
@@ -64,12 +58,8 @@ public class PathTracking {
         currentX = currentX + xAvg * Math.cos(Math.toRadians(currentZ)) + yAvg * Math.sin(Math.toRadians(currentZ));
         currentY = currentY - xAvg * Math.sin(Math.toRadians(currentZ)) + yAvg * Math.cos(Math.toRadians(currentZ));
 
-        // writer.println(currentX+" "+currentY);
         SmartDashboard.putNumber("CurrentX", currentX);
         SmartDashboard.putNumber("CurrentY", currentY);
         SmartDashboard.putNumber("CurrentZ", currentZ);
     }
-    // public void close() {
-    // writer.close();
-    // }
 }
