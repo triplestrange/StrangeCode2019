@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.PathTesting;
+import frc.robot.commands.auto.loriPathTesting;
 import frc.robot.commands.swerve.*;
 
 public class OI {

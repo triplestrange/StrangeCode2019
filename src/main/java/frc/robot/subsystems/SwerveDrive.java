@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
@@ -222,11 +221,9 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putNumber("FR", modules[1].getAngle() * 360 / (2 * Math.PI));
         SmartDashboard.putNumber("BL", modules[2].getAngle() * 360 / (2 * Math.PI));
         SmartDashboard.putNumber("BR", modules[3].getAngle() * 360 / (2 * Math.PI));
-        SmartDashboard.putNumber("DriveDistance", modules[1].getDistance());
+        SmartDashboard.putNumber("FLDrive", modules[1].getDistance());
         SmartDashboard.putBoolean("FieldOrient", drivingField);
         SmartDashboard.putNumber("Gyro", navx.getAngle());
-        SmartDashboard.putNumber("CurrentLimit", modules[0].driveController.getRampRate());
-        SmartDashboard.putBoolean("ControlMode", modules[0].driveController.getParameterInt(ConfigParameter.kCtrlType).isEmpty());
     }
 
     public void runProfile(double angle, TrapezoidProfile profile) {
@@ -254,6 +251,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new SwerveDriveWithJoy());
+    // trying this
     }
 
     @Override

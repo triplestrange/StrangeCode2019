@@ -12,9 +12,9 @@ public class PathFollower {
     long startTime;
 
     public PathFollower() {
-        this.rotFollower = new ProfileFollower(.00225, 0, 0.005, 0, 0.0005);
-        this.parFollower = new ProfileFollower(.00575, 0.002, 0.125, 0, 0.002);
-        this.perpFollower = new ProfileFollower(0, 0, 0.01, 0, 0.0);
+        this.rotFollower = new ProfileFollower(.00225, 0, 0.005, 0, 0.001);
+        this.parFollower = new ProfileFollower(.00575, 0.002, 0.125, 0, 0.0);
+        this.perpFollower = new ProfileFollower(0, 0, 0.0225, 0, 0.0);
         if (!SmartDashboard.containsKey("zP"))
             SmartDashboard.putNumber("zP", rotFollower.kP);
         if (!SmartDashboard.containsKey("zD"))
