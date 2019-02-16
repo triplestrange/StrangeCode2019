@@ -66,4 +66,9 @@ public class RobotMap {
         public final static int BACK = 9;
         public final static int START = 10;
     }
+    public static class CargoHandler {
+        public final static int LT = 3;
+        public final static int RT = 4;
+        public final static double defaultSpeed = 1;
+    }
 }

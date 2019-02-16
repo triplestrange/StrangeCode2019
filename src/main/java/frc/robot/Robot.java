@@ -3,9 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.commands.CargoJoystick;
 import frc.robot.commands.auto.PathTesting;
 import frc.robot.profiling.PathFollower;
 import frc.robot.profiling.PathTracking;
@@ -20,6 +23,7 @@ public class Robot extends TimedRobot {
     public static PathTracking path;
     public static PathFollower follower;
     public static Command autoCommand;
+    public static Cargo cargo;
     // public static boolean Tape;
     // public static PowerDistributionPanel pdp;
 
@@ -31,6 +35,7 @@ public class Robot extends TimedRobot {
         follower = new PathFollower();
         m_oi = new OI();
         autoCommand = new PathTesting();
+        cargo = new Cargo(joy2);
         // pdp = new PowerDistributionPanel();
         // Tape = true;
     }
