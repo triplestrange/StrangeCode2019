@@ -66,9 +66,32 @@ public class RobotMap {
         public final static int BACK = 9;
         public final static int START = 10;
     }
+
+
+    public static class Elevator {
+		public final static int elevator1 = 8;
+		public final static int elevator2 = 9;
+				
+		public final static int MagEncoderPort1 = 0;
+		public final static int MagEncoderPort2 = 1;
+    }
+    
+    public static class Hatch {
+        public final static int hatchMotor = 9; // fake
+        public final static int hatchEncoderOffset = 10;  
+        public final static int hatchEncoderPort = 4;
+
+        public final static int hatch0Button = 0;
+        public final static int hatch90Button = 90;
+        public final static int hatch180Button = 180;
+
+    }
+
+
     public static class CargoHandler {
         public final static int LT = 3;
         public final static int RT = 4;
         public final static double defaultSpeed = 1;
     }
+
 }
