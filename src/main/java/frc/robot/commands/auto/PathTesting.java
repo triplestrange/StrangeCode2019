@@ -2,7 +2,7 @@ package frc.robot.commands.auto;
 
 import frc.robot.profiling.SwerveWaypoint;
 import frc.robot.commands.*;
-import frc.robot.commands.swerve.SwerveRotate;
+import frc.robot.commands.swerve.PathCommand;
 import jaci.pathfinder.Pathfinder;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

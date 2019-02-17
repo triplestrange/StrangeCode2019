@@ -8,11 +8,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.ParameterType;
-// import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 
 /**
  * @author Duncan Wizardman Page
@@ -21,7 +22,6 @@ public class SwerveModule implements PIDSource, PIDOutput {
     private PIDController steerPID;
     public CANSparkMax driveController;
     public CANEncoder encoder;
-    // protected WPI_TalonSRX driveController;
     public WPI_VictorSPX steerController;
     private AbsoluteEncoder steerEncoder;
     public double positionX, positionY;

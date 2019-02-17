@@ -1,19 +1,21 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.PathTesting;
-import frc.robot.commands.auto.loriPathTesting;
 import frc.robot.commands.swerve.*;
 
 public class OI {
-    Button lowSpeed = new JoystickButton(Robot.joy1, RobotMap.Controller.LEFT_TRIGGER);
-    Button highSpeed = new JoystickButton(Robot.joy1, RobotMap.Controller.RIGHT_TRIGGER);
-    Button lockSwerve = new JoystickButton(Robot.joy1, RobotMap.Controller.A);
-    Button fieldOrient = new JoystickButton(Robot.joy1, RobotMap.Controller.RIGHT_BUMPER);
-    Button gyroReset = new JoystickButton(Robot.joy1, RobotMap.Controller.LEFT_BUMPER);
-    Button runAuto = new JoystickButton(Robot.joy1, RobotMap.Controller.B);
-    Button visionButton = new JoystickButton(Robot.joy1, RobotMap.Controller.X);
+    public static Joystick joy1 = new Joystick(0);
+    public static Joystick joy2 = new Joystick(0);
+    Button lowSpeed = new JoystickButton(joy1, RobotMap.Controller.LEFT_TRIGGER);
+    Button highSpeed = new JoystickButton(joy1, RobotMap.Controller.RIGHT_TRIGGER);
+    Button lockSwerve = new JoystickButton(joy1, RobotMap.Controller.A);
+    Button fieldOrient = new JoystickButton(joy1, RobotMap.Controller.RIGHT_BUMPER);
+    Button gyroReset = new JoystickButton(joy1, RobotMap.Controller.LEFT_BUMPER);
+    Button runAuto = new JoystickButton(joy1, RobotMap.Controller.B);
+    Button visionButton = new JoystickButton(joy1, RobotMap.Controller.X);
 
     public OI() {
         lowSpeed.whileHeld(new SwerveSetLowSpeed());

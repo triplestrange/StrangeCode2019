@@ -12,10 +12,10 @@ public class RobotMap {
         public static final double SWERVE_STEER_CAP = 1;
 
         // Port which the drive motors are plugged into
-        public static final int BR_DRIVE = 21;
-        public static final int FR_DRIVE = 22;
-        public static final int FL_DRIVE = 23;
-        public static final int BL_DRIVE = 24;
+        public static final int FL_DRIVE = 1;
+        public static final int FR_DRIVE = 2;
+        public static final int BL_DRIVE = 3;
+        public static final int BR_DRIVE = 4;
 
         // Port which the steering motors are plugged into
         public static final int FL_STEER = 11;
@@ -26,58 +26,42 @@ public class RobotMap {
         // Port which the steering encoders are plugged into
         public static final int FL_ENCODER = 2;
         public static final int FR_ENCODER = 1;
-        public static final int BR_ENCODER = 0;
         public static final int BL_ENCODER = 3;
+        public static final int BR_ENCODER = 0;
+        
+        public final static double FL_ENC_OFFSET = 0;
+        public final static double FR_ENC_OFFSET = 0;
+        public final static double BL_ENC_OFFSET = 0;
+        public final static double BR_ENC_OFFSET = 0;
 
-        // Offset of the encoders to correct the orientation of installation
-        // Encoder offsets for ???
-        // public final static double FL_ENC_OFFSET = 0;
-        // public final static double FR_ENC_OFFSET = 0;
-        // public final static double BL_ENC_OFFSET = 0;
-        // public final static double BR_ENC_OFFSET = 0;
-
-        public final static double FL_ENC_OFFSET = 73;
-        public final static double FR_ENC_OFFSET = 324;
-        public final static double BL_ENC_OFFSET = 190;
-        public final static double BR_ENC_OFFSET = 294.5;
-
-        // Whether or not the encoders are reversed
         public static final boolean ENCODERS_REVERSED = false;
 
         // Cad Wheel Base information for ???
-        // public static final double WHEEL_BASE_WIDTH = 15.255;
-        // public static final double WHEEL_BASE_LENGTH = 26.828;
-
-        // Cad Wheel Base information for Croton
-        public static final double WHEEL_BASE_WIDTH = 21.25;
-        public static final double WHEEL_BASE_LENGTH = 26.25;
-
+        public static final double WHEEL_BASE_WIDTH = 19.25;
+        public static final double WHEEL_BASE_LENGTH = 27.254;
     }
 
     public static class Controller {
-        public final static int X = 1;
-        public final static int A = 2;
-        public final static int B = 3;
+        public final static int A = 1;
+        public final static int B = 2;
+        public final static int X = 3;
         public final static int Y = 4;
         public final static int LEFT_BUMPER = 5;
         public final static int RIGHT_BUMPER = 6;
         public final static int LEFT_TRIGGER = 7;
         public final static int RIGHT_TRIGGER = 8;
-        public final static int BACK = 9;
-        public final static int START = 10;
+        public final static int JOY_LEFT = 9;
+        public final static int JOY_RIGHT = 10;
     }
 
 
     public static class Elevator {
 		public final static int elevator1 = 8;
 		public final static int elevator2 = 9;
-				
-		public final static int MagEncoderPort1 = 0;
-		public final static int MagEncoderPort2 = 1;
     }
     
     public static class Hatch {
-        public final static int hatchMotor = 9; // fake
+        public final static int hatchMotor = 9;
         public final static int hatchEncoderOffset = 10;  
         public final static int hatchEncoderPort = 4;
 
@@ -87,11 +71,10 @@ public class RobotMap {
 
     }
 
-
-    public static class CargoHandler {
-        public final static int LT = 3;
-        public final static int RT = 4;
-        public final static double defaultSpeed = 1;
+    public static class Cargo {
+        public final static int L_MOTOR = 9;
+        public final static int R_MOTOR = 10;
+        public final static int MOTOR = 11;
     }
 
 }

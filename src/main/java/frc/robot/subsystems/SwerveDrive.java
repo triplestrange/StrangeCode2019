@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.swerve.*;
@@ -121,7 +122,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
 
     /*****************************************************************************************/
     public void driveWithVision(double yaw) {
-        double magnitude = Math.abs(-Robot.joy1.getY() * speed) / 100;
+        double magnitude = Math.abs(-OI.joy1.getRawAxis(1) * speed) / 100;
         driveWithOrient(0, magnitude, (yaw / 100), false);
 
     }
@@ -196,9 +197,9 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     }
 
     public void move() {
-        double x = (Robot.joy1.getX());
-        double y = (Robot.joy1.getY());
-        double z = (Robot.joy1.getZ());
+        double x = (OI.joy1.getRawAxis(0));
+        double y = (OI.joy1.getRawAxis(1));
+        double z = (OI.joy1.getRawAxis(4));
 
         if ((Math.abs(x) > .1 || Math.abs(y) > .1 || Math.abs(z) > .1) && !drivingField)
             driveNormal((x * speed) / 100, (-y * speed) / 100, (z * turnRate / 100));
