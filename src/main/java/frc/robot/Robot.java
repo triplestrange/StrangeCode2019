@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
         yaw = yawRaw.getDouble(0);
         path.update();
         swerve.smartDash();
+        hatch.smartdash();
         Scheduler.getInstance().run();
     }
 
