@@ -3,12 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.auto.PathTesting;
 import frc.robot.profiling.PathFollower;
@@ -16,7 +16,6 @@ import frc.robot.profiling.PathTracking;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
 
 public class Robot extends TimedRobot {
     public static Hatch hatch;
@@ -24,6 +23,7 @@ public class Robot extends TimedRobot {
     public static Elevator elevator;
     public static Gyro navxGyro;
     public static SwerveDrive swerve;
+    public static Pneumatics climb;
     public static PathTracking path;
     public static PathFollower follower;
     public static Command autoCommand;
@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
         swerve = new SwerveDrive(navxGyro);
         hatch = new Hatch();
         elevator = new Elevator();
+        climb = new Pneumatics();
         path = new PathTracking(swerve, navxGyro);
         follower = new PathFollower();
         m_oi = new OI();
@@ -55,13 +56,15 @@ public class Robot extends TimedRobot {
         yaw = yawRaw.getDouble(0);
         path.update();
         swerve.smartDash();
+        hatch.smartdash();
         Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        path.reset();
-        autoCommand.start();
+        // path.reset();
+        // autoCommand.start();
+        climb.allIn();
     }
 
     @Override
@@ -71,6 +74,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         swerve.smartDash();
+        climb.allOut();
     }
 
     @Override

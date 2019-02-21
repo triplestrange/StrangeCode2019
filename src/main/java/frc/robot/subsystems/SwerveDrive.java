@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.swerve.*;
 import frc.robot.profiling.TrapezoidProfile;
@@ -12,10 +11,8 @@ import frc.robot.util.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -47,7 +44,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
                     new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
                     new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
                     RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
-    private double pivX, pivY, transAngle, mpangle, gyroangle, speed = 75, turnRate = 75;
+    private double pivX, pivY, transAngle, mpangle, gyroangle, speed = RobotMap.SwerveDrive.SPEED, turnRate = RobotMap.SwerveDrive.TURN_RATE;
     private boolean drivingField = true, visionOn = false;
 
     public SwerveDrive(Gyro navxGyro) {
@@ -200,6 +197,20 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         double x = (OI.joy1.getRawAxis(0));
         double y = (OI.joy1.getRawAxis(1));
         double z = (OI.joy1.getRawAxis(4));
+        boolean slow = OI.joy1.getRawAxis(2) > 0.1;
+        boolean fast = OI.joy1.getRawAxis(3) > 0.1;
+        if (slow) {
+            speed = 15;
+            turnRate = 15;
+        }
+        else if (fast) {
+            speed = 100;
+            turnRate = 100;
+        }
+        else {
+            speed = RobotMap.SwerveDrive.SPEED;
+            turnRate = RobotMap.SwerveDrive.TURN_RATE;
+        }
 
         if ((Math.abs(x) > .1 || Math.abs(y) > .1 || Math.abs(z) > .1) && !drivingField)
             driveNormal((x * speed) / 100, (-y * speed) / 100, (z * turnRate / 100));
@@ -252,7 +263,6 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new SwerveDriveWithJoy());
-    // trying this
     }
 
     @Override
