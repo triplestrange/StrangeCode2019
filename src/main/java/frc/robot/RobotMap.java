@@ -39,6 +39,9 @@ public class RobotMap {
         // Cad Wheel Base information for ???
         public static final double WHEEL_BASE_WIDTH = 19.25;
         public static final double WHEEL_BASE_LENGTH = 27.254;
+
+        public static final double SPEED = 75;
+        public static final double TURN_RATE = 75;
     }
 
     public static class Controller {

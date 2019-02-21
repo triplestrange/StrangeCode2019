@@ -3,66 +3,44 @@ package frc.robot.subsystems;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.hatch.HatchWithJoy;
-import frc.robot.profiling.TrapezoidProfile;
-import frc.robot.profiling.ProfileFollower;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hatch extends PIDSubsystem {
 
+    Solenoid piston = new Solenoid(2);
     WPI_TalonSRX hatchMotor = new WPI_TalonSRX(RobotMap.Hatch.hatchMotor);
-    AbsoluteEncoder hatchEncoder = new AbsoluteEncoder(RobotMap.Hatch.hatchEncoderPort,RobotMap.Hatch.hatchEncoderOffset);
+    AbsoluteEncoder hatchEncoder = new AbsoluteEncoder(RobotMap.Hatch.hatchEncoderPort,
+            RobotMap.Hatch.hatchEncoderOffset);
     private double degrees;
     private double hatchAngle;
 
     public Hatch() {
         super("Hatch", 0.01, 0, 0.01);
         hatchMotor.setNeutralMode(NeutralMode.Brake);
-        // // Set Motion Magic gains in slot0 - see documentation
-        // hatchMotor.selectProfileSlot(0, 0);
-        // hatchMotor.config_kF(0, 0, 0);
-        // hatchMotor.config_kP(0, 0, 0);
-        // hatchMotor.config_kI(0, 0, 0);
-        // hatchMotor.config_kD(0, 0, 0);
     }
 
     public void move() {
         disable();
         if (Math.abs(OI.joy2.getRawAxis(4)) > 0.1) {
-            hatchMotor.set(OI.joy2.getRawAxis(4)*0.5);
+            hatchMotor.set(OI.joy2.getRawAxis(4) * 0.5);
         } else {
             hatchMotor.set(0);
         }
     }
 
     public void smartdash() {
-        SmartDashboard.putNumber("HatchEncoder", (hatchEncoder.getAngle()* 360 / (2 * Math.PI)));
-}
-    public void stop() {
-        hatchMotor.set(0);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new HatchWithJoy());
+        SmartDashboard.putNumber("HatchEncoder", (hatchEncoder.getAngle() * 360 / (2 * Math.PI)));
     }
 
     public void hatchLeft() {
         setSetpoint(35);
         enable();
-    }
-
-    public boolean joyPosition() {
-        return Math.abs(OI.joy2.getRawAxis(4)) > .05;
     }
 
     public void hatchRight() {
@@ -75,28 +53,36 @@ public class Hatch extends PIDSubsystem {
         enable();
     }
 
-    public void pincherPivot(double degrees) {
+    public void stop() {
+        hatchMotor.set(0);
+    }
+
+    public void hatchPivot(double degrees) {
         this.degrees = degrees;
         hatchAngle = hatchEncoder.getAngle();
         hatchMotor.set(ControlMode.MotionMagic, degrees);
     }
 
-    // @Override
-    // public void setSetpoint(double setpoint) {
-    //     setpoint = wrapAngle(setpoint);
-    //     super.setSetpoint(setpoint);
-    // }
+    public void pistonOut() {
+        piston.set(true);
+    }
     
-    // private double wrapAngle(double angle) {
-    //     angle %= 2 * Math.PI;
-    //     if (angle < 0)
-    //         angle += 2 * Math.PI;
-    //     return angle;
-    // }
+    public void pistonIn() {
+        piston.set(false);
+    }
+
+    public boolean joyPosition() {
+        return Math.abs(OI.joy2.getRawAxis(4)) > .05;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new HatchWithJoy());
+    }
 
     @Override
     protected double returnPIDInput() {
-        return (hatchEncoder.getAngle()* 360 / (2 * Math.PI));
+        return (hatchEncoder.getAngle() * 360 / (2 * Math.PI));
     }
 
     @Override

@@ -47,6 +47,7 @@ public class Cargo extends Subsystem {
         rollWheels(0);
     }
 
+    @Override
     public void initDefaultCommand() {
         setDefaultCommand(new CargoWithJoy());
     }
