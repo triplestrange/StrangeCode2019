@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -30,14 +31,16 @@ public class Robot extends TimedRobot {
     public static OI m_oi;
     public static NetworkTableInstance instance;
     public static NetworkTable visionNT;
-    public static NetworkTableEntry yawRaw;
+    public static NetworkTableEntry yawRaw, yawDetected;
     public static double yaw;
-
+    
+    
 
     public void robotInit() {
         yaw = 0;
         instance = NetworkTableInstance.getDefault();
         visionNT = instance.getTable("ChickenVision");
+        yawDetected = visionNT.getEntry("tapedetected");
         yawRaw = visionNT.getEntry("tapeYaw");
         navxGyro = new Gyro();
         swerve = new SwerveDrive(navxGyro);
@@ -57,14 +60,14 @@ public class Robot extends TimedRobot {
         path.update();
         swerve.smartDash();
         hatch.smartdash();
+        climb.allOut();
         Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        // path.reset();
-        // autoCommand.start();
-        climb.allIn();
+        path.reset();
+        autoCommand.start();
     }
 
     @Override
@@ -73,8 +76,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        swerve.smartDash();
-        climb.allOut();
     }
 
     @Override
@@ -87,7 +88,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Scheduler.getInstance().run();
     }
 
     @Override

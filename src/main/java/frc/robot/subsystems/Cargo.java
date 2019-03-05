@@ -6,6 +6,8 @@ import frc.robot.OI;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,6 +18,7 @@ public class Cargo extends Subsystem {
     public static WPI_VictorSPX mCargoHandlerL = new WPI_VictorSPX(RobotMap.Cargo.L_MOTOR);
     public static WPI_VictorSPX mCargoHandlerR = new WPI_VictorSPX(RobotMap.Cargo.R_MOTOR);
     public static WPI_VictorSPX mCargoIntake = new WPI_VictorSPX(RobotMap.Cargo.MOTOR);
+    // DoubleSolenoid longCargo = new DoubleSolenoid(1, 0);
 
     public Cargo() {
         super();
@@ -29,11 +32,14 @@ public class Cargo extends Subsystem {
         double speedout = OI.joy2.getRawAxis(3);
 
         if (speedin > .05) {
-            rollWheels(speedin);
+            rollWheels(-speedin);
+            // longCargo.set(DoubleSolenoid.Value.kReverse);
         } else if (speedout > .05) {
-            rollWheels(-speedout);
+            rollWheels(speedout);
+            // longCargo.set(DoubleSolenoid.Value.kForward);
         } else {
             stop();
+            // longCargo.set(DoubleSolenoid.Value.kForward);
         }
     }
 

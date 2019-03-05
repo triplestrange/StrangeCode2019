@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import frc.robot.RobotMap;
 import frc.robot.profiling.TrapezoidProfile;
 import frc.robot.profiling.ProfileFollower;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
@@ -43,9 +45,10 @@ public class SwerveModule implements PIDSource, PIDOutput {
         steerPID.setOutputRange(-RobotMap.SwerveDrive.SWERVE_STEER_CAP, RobotMap.SwerveDrive.SWERVE_STEER_CAP);
         steerPID.setContinuous();
         steerPID.disable();
-        driveController.setOpenLoopRampRate(2);
+        steerController.setNeutralMode(NeutralMode.Brake);
+        driveController.setOpenLoopRampRate(0.5);
         driveController.setIdleMode(IdleMode.kBrake);
-        driveController.setSmartCurrentLimit(30);
+        driveController.setSmartCurrentLimit(40);
         driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
         driveController.burnFlash();
         encoder = driveController.getEncoder();

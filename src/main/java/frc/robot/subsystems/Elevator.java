@@ -7,6 +7,7 @@ import frc.robot.profiling.TrapezoidProfile;
 import frc.robot.profiling.ProfileFollower;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -40,22 +41,26 @@ public class Elevator extends Subsystem {
         // elevator1.config_kI(0, 0, 0);
         // elevator1.config_kD(0, 0, 0);
         elevator1.setNeutralMode(NeutralMode.Brake);
-
+        elevator2.setNeutralMode(NeutralMode.Brake);
     }
 
     public void move() {
         double y = OI.joy2.getRawAxis(1);
         if (Math.abs(y) > 0.1) {
             if (OI.joy2.getRawButton(RobotMap.Controller.RIGHT_BUMPER)) {
-                elevator1.set(y * (-0.5));
+                elevator1.set(y * (0.5));
+                elevator2.set(-y * (0.5));
+                
             } else {
-                elevator1.set(y * (-1));
+                elevator1.set(y * (1));
+                elevator2.set(-y * (1));
             }
         }
     }
     
     public void stop() {
         elevator1.set(0);
+        elevator2.set(0);
     }
     @Override
     protected void initDefaultCommand() {

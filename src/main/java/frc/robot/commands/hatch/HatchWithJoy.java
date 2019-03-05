@@ -28,13 +28,11 @@ public class HatchWithJoy extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.hatch.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.hatch.stop();
     }
 }

@@ -21,16 +21,21 @@ public class Hatch extends PIDSubsystem {
     private double hatchAngle;
 
     public Hatch() {
-        super("Hatch", 0.01, 0, 0.01);
+        super("Hatch", 0.01, 0, 0.0075);
         hatchMotor.setNeutralMode(NeutralMode.Brake);
     }
 
+    public void updateP() {
+        
+    }
     public void move() {
-        disable();
+        hatchMotor.setNeutralMode(NeutralMode.Brake);
         if (Math.abs(OI.joy2.getRawAxis(4)) > 0.1) {
+            disable();
             hatchMotor.set(OI.joy2.getRawAxis(4) * 0.5);
         } else {
-            hatchMotor.set(0);
+            setSetpoint(hatchEncoder.getAngle() * 360 / (2 * Math.PI));
+            enable();
         }
     }
 
@@ -39,17 +44,17 @@ public class Hatch extends PIDSubsystem {
     }
 
     public void hatchLeft() {
-        setSetpoint(35);
+        setSetpoint(240);
         enable();
     }
 
     public void hatchRight() {
-        setSetpoint(140);
+        setSetpoint(120);
         enable();
     }
 
     public void hatchUp() {
-        setSetpoint(95);
+        setSetpoint(180);
         enable();
     }
 
@@ -63,11 +68,11 @@ public class Hatch extends PIDSubsystem {
         hatchMotor.set(ControlMode.MotionMagic, degrees);
     }
 
-    public void pistonOut() {
+    public void grab() {
         piston.set(true);
     }
     
-    public void pistonIn() {
+    public void place() {
         piston.set(false);
     }
 

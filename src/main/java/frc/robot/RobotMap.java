@@ -29,16 +29,21 @@ public class RobotMap {
         public static final int BL_ENCODER = 2;
         public static final int BR_ENCODER = 3;
         
-        public final static double FL_ENC_OFFSET = 213;
-        public final static double FR_ENC_OFFSET = 203;
-        public final static double BL_ENC_OFFSET = 31;
-        public final static double BR_ENC_OFFSET = 269;
+        // public final static double FL_ENC_OFFSET = 213;
+        // public final static double FR_ENC_OFFSET = 203;
+        // public final static double BL_ENC_OFFSET = 31;
+        // public final static double BR_ENC_OFFSET = 269;
+
+        public final static double FL_ENC_OFFSET = 275.5;
+        public final static double FR_ENC_OFFSET = 164;
+        public final static double BL_ENC_OFFSET = 142.5;
+        public final static double BR_ENC_OFFSET = 291;
 
         public static final boolean ENCODERS_REVERSED = false;
 
         // Cad Wheel Base information for ???
-        public static final double WHEEL_BASE_WIDTH = 19.25;
-        public static final double WHEEL_BASE_LENGTH = 27.254;
+        public static final double WHEEL_BASE_LENGTH = 19.25;
+        public static final double WHEEL_BASE_WIDTH = 27.254;
 
         public static final double SPEED = 75;
         public static final double TURN_RATE = 75;
@@ -65,8 +70,9 @@ public class RobotMap {
     
     public static class Hatch {
         public final static int hatchMotor = 11;
-        public final static int hatchEncoderOffset = 282;  
         public final static int hatchEncoderPort = 4;
+        // public final static int hatchEncoderOffset = 282;
+        public final static int hatchEncoderOffset = 201;
 
         public final static int hatch0Button = 0;
         public final static int hatch90Button = 90;
