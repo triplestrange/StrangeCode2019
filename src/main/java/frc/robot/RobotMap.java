@@ -65,7 +65,17 @@ public class RobotMap {
 
     public static class Elevator {
 		public final static int elevator1 = 9;
-		public final static int elevator2 = 10;
+        public final static int elevator2 = 10;
+        
+        public final static int CARGO_1ROCKET = 16380;
+        public final static int CARGO_2ROCKET = 38844;
+        public final static int CARGO_3ROCKET = 63424;
+        public final static int CARGO_SHIP = 27225;
+
+        public final static int HATCH_1ROCKET = 3000;
+        public final static int HATCH_2ROCKET = 28731;
+        public final static int HATCH_3ROCKET = 54186;
+
     }
     
     public static class Hatch {

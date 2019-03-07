@@ -60,14 +60,14 @@ public class Robot extends TimedRobot {
         path.update();
         swerve.smartDash();
         hatch.smartdash();
-        climb.allOut();
         Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        path.reset();
-        autoCommand.start();
+        // path.reset();
+        // autoCommand.start();
+        climb.allIn();
     }
 
     @Override
@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        climb.allOut();
     }
 
     @Override

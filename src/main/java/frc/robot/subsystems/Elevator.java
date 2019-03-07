@@ -22,10 +22,29 @@ public class Elevator extends Subsystem {
     // here. Call these from Commands.
     WPI_TalonSRX elevator1 = new WPI_TalonSRX(RobotMap.Elevator.elevator1);
     WPI_VictorSPX elevator2 = new WPI_VictorSPX(RobotMap.Elevator.elevator2);
+    double distZero;
 
     public Elevator() {
-        // elevator1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        // elevator2.follow(elevator1);
+        elevator1.configFactoryDefault();
+        elevator2.configFactoryDefault();
+        elevator1.configPeakCurrentLimit(15, 30);
+		elevator1.configPeakCurrentDuration(0, 30);
+		elevator1.configContinuousCurrentLimit(10, 30);
+        elevator1.enableCurrentLimit(true); // Honor initial setting
+
+        elevator1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        
+        elevator1.setNeutralMode(NeutralMode.Brake);
+        elevator2.setNeutralMode(NeutralMode.Brake);
+
+        // elevator1.configReverseSoftLimitThreshold(RobotMap.Elevator.CARGO_3ROCKET-2000, 30);
+        // elevator1.configForwardSoftLimitThreshold(2000, 30);
+        // elevator1.configForwardSoftLimitEnable(true, 30);
+        // elevator1.configReverseSoftLimitEnable(true, 30);
+
+        elevator2.follow(elevator1);
+        elevator2.setInverted(InvertType.OpposeMaster);
         // // encoder.setDistancePerPulse(-(1.0 / 256) * (8.0 / 60) * (1.432 *
         // Math.PI));
 
@@ -40,27 +59,38 @@ public class Elevator extends Subsystem {
         // elevator1.config_kP(0, 0, 0);
         // elevator1.config_kI(0, 0, 0);
         // elevator1.config_kD(0, 0, 0);
-        elevator1.setNeutralMode(NeutralMode.Brake);
-        elevator2.setNeutralMode(NeutralMode.Brake);
     }
+
 
     public void move() {
         double y = OI.joy2.getRawAxis(1);
-        if (Math.abs(y) > 0.1) {
-            if (OI.joy2.getRawButton(RobotMap.Controller.RIGHT_BUMPER)) {
-                elevator1.set(y * (0.5));
-                elevator2.set(-y * (0.5));
-                
-            } else {
-                elevator1.set(y * (1));
-                elevator2.set(-y * (1));
-            }
+        if (getDistance() < 2000 && y > 0.1) {
+            elevator1.set(y * (0.5));
         }
+        else if (getDistance() > 61424 && y < 0.1) {
+            elevator1.set(y * (0.5));
+        }
+        else {
+            
+        }
+        // if (Math.abs(y) > 0.1) {
+        //     elevator1.set(y * (0.5));
+        // }
+        if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
+            resetEncoder();
+        }
+        SmartDashboard.putNumber("Elevator Encoder", getDistance());
     }
-    
+    public void resetEncoder() {
+		distZero += getDistance();
+	}
+
+	public double getDistance() {
+		return elevator1.getSelectedSensorPosition() - distZero;
+    }
+
     public void stop() {
         elevator1.set(0);
-        elevator2.set(0);
     }
     @Override
     protected void initDefaultCommand() {
