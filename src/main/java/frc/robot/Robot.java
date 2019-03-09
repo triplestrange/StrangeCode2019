@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
         m_oi = new OI();
         autoCommand = new PathTesting();
         cargo = new Cargo();
+        climb.allOut();
     }
 
     @Override
@@ -67,7 +68,6 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         // path.reset();
         // autoCommand.start();
-        climb.allIn();
     }
 
     @Override
@@ -76,11 +76,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        climb.allOut();
     }
 
     @Override
     public void teleopPeriodic() {
+        climb.move();
     }
 
     @Override

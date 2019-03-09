@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.RobotMap;
 import frc.robot.commands.cargo.CargoWithJoy;
 import frc.robot.OI;
+import frc.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -32,17 +33,27 @@ public class Cargo extends Subsystem {
     public void move() {
         double speedin = OI.joy2.getRawAxis(2);
         double speedout = OI.joy2.getRawAxis(3);
+        boolean cargo = false;
 
         if (speedin > .25) {
             rollWheels(-speedin);
-            longCargo.set(DoubleSolenoid.Value.kForward);
+            cargo = true;
         } else if (speedout > .25) {
             rollWheels(speedout);
-            longCargo.set(DoubleSolenoid.Value.kReverse);
+            cargo = false;
         } else {
             stop();
-            longCargo.set(DoubleSolenoid.Value.kReverse);
         }
+
+        if (cargo == true) {
+            longCargo.set(DoubleSolenoid.Value.kForward);
+        } else if (cargo == true && Robot.elevator.getDistance() > RobotMap.Elevator.HATCH_2ROCKET) {
+            longCargo.set(DoubleSolenoid.Value.kReverse);
+            cargo = false;
+        }
+        else {
+            longCargo.set(DoubleSolenoid.Value.kReverse);
+        } 
     }
 
     public void rollWheels(double speed) {
