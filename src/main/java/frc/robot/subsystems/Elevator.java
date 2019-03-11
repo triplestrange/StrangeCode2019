@@ -69,13 +69,21 @@ public class Elevator extends Subsystem {
         else if (OI.joy2.getRawButton(RobotMap.Controller.Y)) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_3ROCKET);
         }
+        else if (OI.joy2.getPOV() == 0) {
+            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_3ROCKET);
+        }
+        else if (OI.joy2.getPOV() == 90) {
+            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_2ROCKET);
+        }
+        else if (OI.joy2.getPOV() == 180) {
+            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_1ROCKET);
+        }
+        else if (OI.joy2.getPOV() == 270) {
+            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_SHIP);
+        }
         else if (OI.joy2.getRawButton(RobotMap.Controller.X)) {
             resetEncoder();
         }
-        else {
-            elevator1.set(0);
-        }
-
 
         SmartDashboard.putNumber("Elevator Encoder", getDistance());
         SmartDashboard.putBoolean("Clear for Cargo", clearForCargo());
