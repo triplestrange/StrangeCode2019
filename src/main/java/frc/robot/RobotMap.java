@@ -96,4 +96,7 @@ public class RobotMap {
         public final static int MOTOR = 23;
     }
 
+    public static class Governor {
+        public final static int mGovernor = 12;
+    }
 }
