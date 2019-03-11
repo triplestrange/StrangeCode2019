@@ -18,6 +18,8 @@ public class Pneumatics extends Subsystem {
     WPI_VictorSPX climbWheels = new WPI_VictorSPX(24);
     Solenoid shortCargo = new Solenoid(5);
 
+    WPI_VictorSPX mGovernor = new WPI_VictorSPX(RobotMap.Governor.mGovernor);
+
     public Pneumatics() {
         super();
     }
@@ -30,26 +32,39 @@ public class Pneumatics extends Subsystem {
     // }
 
     public void move() {
+        double controlGovernor = OI.joy3.getRawAxis(4);
+
         climbWheels.setNeutralMode(NeutralMode.Brake);
         if (OI.joy3.getRawButton(RobotMap.Controller.Y)) {
             rearPiston.set(DoubleSolenoid.Value.kForward);
-            Timer.delay(0.35);
+            // Timer.delay(0.35); // They didn't want a delay, even though it was smol
             frontPiston.set(DoubleSolenoid.Value.kForward);
+            
         }
         if (OI.joy3.getRawButton(RobotMap.Controller.B)) {
             frontPiston.set(DoubleSolenoid.Value.kReverse);
             rearPiston.set(DoubleSolenoid.Value.kForward);
+            
         }
         if (OI.joy3.getRawButton(RobotMap.Controller.A)) {
             frontPiston.set(DoubleSolenoid.Value.kReverse);
             rearPiston.set(DoubleSolenoid.Value.kReverse);
+            
         }
         if (Math.abs(OI.joy3.getRawAxis(0)) > 0.1) {
             climbWheels.set(OI.joy3.getRawAxis(0));
-        }
-        else {
+        } else {
             climbWheels.set(0);
         }
+
+        mGovernor.setNeutralMode(NeutralMode.Brake);
+        if (Math.abs(controlGovernor) > 0.1) {
+            mGovernor.set(controlGovernor * 0.75); // If it doesn't work, change it to controlGovernor
+        } else {
+            mGovernor.set(0);
+        }
+
+
     }
 
     public void allOut() {

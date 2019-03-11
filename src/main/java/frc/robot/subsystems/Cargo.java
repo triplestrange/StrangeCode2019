@@ -33,35 +33,30 @@ public class Cargo extends Subsystem {
     public void move() {
         double speedin = OI.joy2.getRawAxis(2);
         double speedout = OI.joy2.getRawAxis(3);
-        boolean cargo = false;
+        boolean cargo = Robot.elevator.clearForCargo();
 
-        if (speedin > .25) {
+        if (speedin > .25 && cargo == true) {
             rollWheels(-speedin);
-            cargo = true;
-        } else if (speedout > .25) {
-            rollWheels(speedout);
-            cargo = false;
-        } else {
-            stop();
-        }
-
-        if (cargo == true) {
             longCargo.set(DoubleSolenoid.Value.kForward);
-        } else if (cargo == true && Robot.elevator.getDistance() > RobotMap.Elevator.HATCH_2ROCKET) {
-            longCargo.set(DoubleSolenoid.Value.kReverse);
-            cargo = false;
+        } 
+        else if (speedout > .25) {
+            rollWheels(speedout);
         }
         else {
+            stop();
+        }
+        if (cargo == false) {
+            System.out.println("Beep");
             longCargo.set(DoubleSolenoid.Value.kReverse);
-        } 
+        }
     }
 
     public void rollWheels(double speed) {
         mCargoHandlerL.set(-speed);
         mCargoHandlerR.set(speed);
         mCargoIntake.set(speed);
-    }
 
+    }
     public void stop() {
         rollWheels(0);
     }
