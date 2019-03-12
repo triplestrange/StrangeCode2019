@@ -37,7 +37,6 @@ public class Pneumatics extends Subsystem {
         climbWheels.setNeutralMode(NeutralMode.Brake);
         if (OI.joy3.getRawButton(RobotMap.Controller.Y)) {
             rearPiston.set(DoubleSolenoid.Value.kForward);
-            // Timer.delay(0.35); // They didn't want a delay, even though it was smol
             frontPiston.set(DoubleSolenoid.Value.kForward);
             
         }
