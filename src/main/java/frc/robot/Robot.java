@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     public static NetworkTable visionNT;
     public static NetworkTableEntry yawRaw, yawDetected;
     public static double yaw;
+    public static boolean tape;
     
     
 
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         yaw = yawRaw.getDouble(0);
+        tape = yawDetected.getBoolean(false);
         path.update();
         swerve.smartDash();
         hatch.smartdash();

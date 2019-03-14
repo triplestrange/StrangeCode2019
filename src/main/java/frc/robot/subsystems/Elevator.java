@@ -20,6 +20,8 @@ public class Elevator extends Subsystem {
     WPI_TalonSRX elevator1 = new WPI_TalonSRX(RobotMap.Elevator.elevator1);
     WPI_VictorSPX elevator2 = new WPI_VictorSPX(RobotMap.Elevator.elevator2);
     double distZero;
+    boolean mp = false;
+    
 
     public Elevator() {
         elevator1.configFactoryDefault();
@@ -59,30 +61,42 @@ public class Elevator extends Subsystem {
         double pos = getDistance();
         if (OI.joy2.getRawButton(RobotMap.Controller.B)) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_2ROCKET);
+            mp = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
+            mp = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.Y)) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_3ROCKET);
+            mp = true;
         }
         if (OI.joy2.getPOV() == 0) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_3ROCKET);
+            mp = true;
         }
         if (OI.joy2.getPOV() == 90) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_2ROCKET);
+            mp = true;
         }
         if (OI.joy2.getPOV() == 180) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_1ROCKET);
+            mp = true;
         }
         if (OI.joy2.getPOV() == 270) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_SHIP);
+            mp = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.X)) {
             resetEncoder();
         }
-        if (Math.abs(y) > 0.05) {
+
+        if (Math.abs(y) > 0.15) {
+            mp = false;
             elevator1.set(-1 * y);
+        }
+        else if (mp == false) {
+            elevator1.set(0);
         }
 
         SmartDashboard.putNumber("Elevator Encoder", getDistance());
@@ -94,7 +108,7 @@ public class Elevator extends Subsystem {
 	}
 
     public boolean clearForCargo() {
-        return getDistance() < 14000;
+        return getDistance() < RobotMap.Elevator.CARGO_1ROCKET-2000;
     }
 	public double getDistance() {
 		return elevator1.getSelectedSensorPosition() - distZero;

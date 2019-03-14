@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.swerve.*;
 import frc.robot.profiling.TrapezoidProfile;
@@ -118,9 +119,13 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     }
 
     /*****************************************************************************************/
-    public void driveWithVision(double yaw) {
-        double magnitude = Math.abs(-OI.joy1.getRawAxis(1) * speed) / 100;
-        driveWithOrient(0, magnitude, (yaw / 100), false);
+    public void driveWithVision(double yaw, int camNum) {
+        double magnitude = (-OI.joy1.getRawAxis(1) * speed) / 100;
+        if (camNum == 1)
+            if  (Robot.tape)
+                driveWithOrient(magnitude, 0, (yaw / 100)*4, false);
+            else
+                driveWithOrient(magnitude, 0, 0, false);
 
     }
     /*****************************************************************************************/

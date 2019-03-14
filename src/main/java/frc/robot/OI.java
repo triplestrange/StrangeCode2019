@@ -30,7 +30,7 @@ public class OI {
         fieldOrient.whenPressed(new SwerveSetField());
         gyroReset.whenPressed(new SwerveGyroReset());
         // runAuto.whenPressed(new PathTesting());
-        // visionButton.whileHeld(new SwerveDriveWithVision());
+        visionButton.whileHeld(new SwerveDriveWithVisionRight());
 
         hatchleft.whenPressed(new HatchLeft());
         hatchright.whenPressed(new HatchRight());
