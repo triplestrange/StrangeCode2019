@@ -15,26 +15,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
     public static int getDistance;
-	// Put methods for controlling this subsystem
+    // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    WPI_TalonSRX elevator1 = new WPI_TalonSRX(RobotMap.Elevator.elevator1);
-    WPI_VictorSPX elevator2 = new WPI_VictorSPX(RobotMap.Elevator.elevator2);
-    double distZero;
-    boolean mp = false;
-    
+    private WPI_TalonSRX elevator1 = new WPI_TalonSRX(RobotMap.Elevator.elevator1);
+    private WPI_VictorSPX elevator2 = new WPI_VictorSPX(RobotMap.Elevator.elevator2);
+    private double position;
+    private boolean elevatorMM = false;
 
     public Elevator() {
         elevator1.configFactoryDefault();
         elevator2.configFactoryDefault();
         elevator1.configPeakCurrentLimit(15, 30);
-		elevator1.configPeakCurrentDuration(0, 30);
-		elevator1.configContinuousCurrentLimit(10, 30);
+        elevator1.configPeakCurrentDuration(0, 30);
+        elevator1.configContinuousCurrentLimit(10, 30);
         elevator1.enableCurrentLimit(true); // Honor initial setting
 
         elevator1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-        elevator1.setSensorPhase(true);
-        elevator1.setInverted(true);
-        
+        elevator1.setSensorPhase(false);
+        elevator1.setInverted(false);
+
         elevator1.setNeutralMode(NeutralMode.Brake);
         elevator2.setNeutralMode(NeutralMode.Brake);
 
@@ -50,73 +49,97 @@ public class Elevator extends Subsystem {
         elevator1.config_kD(0, 0, 30);
         elevator1.configMotionCruiseVelocity(3335, 30);
         elevator1.configMotionAcceleration(3335, 30);
-        
-        elevator2.follow(elevator1);
-        elevator2.setInverted(InvertType.OpposeMaster);
-    }
 
+        elevator2.follow(elevator1);
+        elevator2.setInverted(InvertType.FollowMaster);
+    }
 
     public void move() {
         double y = OI.joy2.getRawAxis(1);
-        double pos = getDistance();
         if (OI.joy2.getRawButton(RobotMap.Controller.B)) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_2ROCKET);
-            mp = true;
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_2ROCKET);
+        elevatorMM = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
-            mp = true;
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
+        elevatorMM = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.Y)) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_3ROCKET);
-            mp = true;
-        }
-        if (OI.joy2.getPOV() == 0) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_3ROCKET);
-            mp = true;
-        }
-        if (OI.joy2.getPOV() == 90) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_2ROCKET);
-            mp = true;
-        }
-        if (OI.joy2.getPOV() == 180) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_1ROCKET);
-            mp = true;
-        }
-        if (OI.joy2.getPOV() == 270) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_SHIP);
-            mp = true;
+            elevatorMM = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.X)) {
+            elevator1.set(ControlMode.MotionMagic, 0);
+            elevatorMM = true;
+        }
+        if (OI.joy2.getPOV() == 0) {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_3ROCKET);
+        elevatorMM = true;
+        }
+        if (OI.joy2.getPOV() == 90) {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_2ROCKET);
+        elevatorMM = true;
+        }
+        if (OI.joy2.getPOV() == 180) {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_1ROCKET);
+        elevatorMM = true;
+        }
+        if (OI.joy2.getPOV() == 270) {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_SHIP);
+        elevatorMM = true;
+        }
+        if (OI.joy2.getRawButton(RobotMap.Controller.RIGHT_FACE)) {
             resetEncoder();
         }
 
         if (Math.abs(y) > 0.15) {
-            mp = false;
+            elevatorMM = false;
             elevator1.set(-1 * y);
-        }
-        else if (mp == false) {
+            position = getDistance();
+        } else if (elevatorMM == false) {
             elevator1.set(0);
         }
+    }
 
+    public void resetEncoder() {
+        elevator1.setSelectedSensorPosition(0, 0, 30);
+    }
+
+    public boolean clearForCargo() {
+        return getDistance() < RobotMap.Elevator.CARGO_1ROCKET - 2000;
+    }
+
+    public void cargoElevator() {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_1ROCKET);
+        elevatorMM = true;
+    }
+
+    public boolean getMM() {
+        return elevatorMM;
+    }
+
+    public void setMM(boolean newMM) {
+        elevatorMM = newMM;
+    }
+
+    public void smartDash() {
         SmartDashboard.putNumber("Elevator Encoder", getDistance());
         SmartDashboard.putBoolean("Clear for Cargo", clearForCargo());
     }
 
-    public void resetEncoder() {
-		distZero += getDistance();
-	}
-
-    public boolean clearForCargo() {
-        return getDistance() < RobotMap.Elevator.CARGO_1ROCKET-2000;
+    public double getDistance() {
+        return elevator1.getSelectedSensorPosition(0);
     }
-	public double getDistance() {
-		return elevator1.getSelectedSensorPosition() - distZero;
+
+    public void startMM(double setpoint, boolean joy) {
+        elevator1.set(ControlMode.MotionMagic, setpoint);
+        elevatorMM = joy;
     }
 
     public void stop() {
         elevator1.set(0);
     }
+
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new ElevatorWithJoy());

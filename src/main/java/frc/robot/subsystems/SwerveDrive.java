@@ -45,7 +45,8 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
                     new WPI_VictorSPX(RobotMap.SwerveDrive.BR_STEER),
                     new AbsoluteEncoder(RobotMap.SwerveDrive.BR_ENCODER, RobotMap.SwerveDrive.BR_ENC_OFFSET),
                     RobotMap.SwerveDrive.WHEEL_BASE_WIDTH / 2, -RobotMap.SwerveDrive.WHEEL_BASE_LENGTH / 2) };
-    private double pivX, pivY, transAngle, mpangle, gyroangle, speed = RobotMap.SwerveDrive.SPEED, turnRate = RobotMap.SwerveDrive.TURN_RATE;
+    private double pivX, pivY, transAngle, mpangle, gyroangle, speed = RobotMap.SwerveDrive.SPEED,
+            turnRate = RobotMap.SwerveDrive.TURN_RATE;
     private boolean drivingField = false, visionOn = false;
 
     public SwerveDrive(Gyro navxGyro) {
@@ -122,14 +123,16 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     public void driveWithVision(double yaw, int camNum) {
         double magnitude = (-OI.joy1.getRawAxis(1) * speed) / 100;
         if (camNum == 1)
-            if  (Robot.tape)
-                driveWithOrient(magnitude, 0, (yaw / 100)*4, false);
-            else
+            if (Robot.tape == true) {
+                driveWithOrient(magnitude, 0, (yaw / 100)*1/2, false);
+            } else {
                 driveWithOrient(magnitude, 0, 0, false);
+            }
 
     }
+
     /*****************************************************************************************/
-    
+
     public void setTrans(Vector2D vector) {
         this.tankVector2D = vector;
     }
@@ -193,7 +196,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     public void setField() {
         this.drivingField = !drivingField;
     }
-    
+
     public void setVision() {
         this.visionOn = !visionOn;
     }
@@ -207,12 +210,10 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         if (slow) {
             speed = 15;
             turnRate = 15;
-        }
-        else if (fast) {
+        } else if (fast) {
             speed = 100;
             turnRate = 100;
-        }
-        else {
+        } else {
             speed = RobotMap.SwerveDrive.SPEED;
             turnRate = RobotMap.SwerveDrive.TURN_RATE;
         }
@@ -226,7 +227,6 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         else
             driveNormal(0, 0, 0);
     }
-
 
     public void stop(int module) {
         modules[module].driveController.set(0);

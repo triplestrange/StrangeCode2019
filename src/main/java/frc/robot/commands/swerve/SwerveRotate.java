@@ -13,18 +13,21 @@ public class SwerveRotate extends Command{
         this.speed = speed;
     }
 
+    @Override
     public void initialize() {
     }
 
+    @Override
     public void execute() {
         Robot.swerve.driveNormal(0, 0, speed);
     }
 
+    @Override
     public boolean isFinished() {
         return Math.abs(Robot.navxGyro.getAngle()) > angle;
     }
 
-
+    @Override
     public void end() {
         Robot.swerve.driveField(0, 0, 0);
     }

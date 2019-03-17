@@ -10,8 +10,8 @@ package frc.robot.commands.hatch;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HatchRight extends Command {
-    public HatchRight() {
+public class HatchDrive extends Command {
+  public HatchDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.hatch);
@@ -20,7 +20,7 @@ public class HatchRight extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.hatch.hatchRight();
+        Robot.hatch.hatchDrive();
     }
 
     // Called repeatedly when this Command is scheduled to run

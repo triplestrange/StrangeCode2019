@@ -9,19 +9,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
-//  That's what I just added ^^^^^^^^
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
 public class Cargo extends Subsystem {
 
-    public static WPI_VictorSPX mCargoHandlerL = new WPI_VictorSPX(RobotMap.Cargo.L_MOTOR);
-    public static WPI_VictorSPX mCargoHandlerR = new WPI_VictorSPX(RobotMap.Cargo.R_MOTOR);
-    public static WPI_VictorSPX mCargoIntake = new WPI_VictorSPX(RobotMap.Cargo.MOTOR);
-    DoubleSolenoid longCargo = new DoubleSolenoid(1, 0);
+    private WPI_VictorSPX mCargoHandlerL = new WPI_VictorSPX(RobotMap.Cargo.L_MOTOR);
+    private WPI_VictorSPX mCargoHandlerR = new WPI_VictorSPX(RobotMap.Cargo.R_MOTOR);
+    private WPI_VictorSPX mCargoIntake = new WPI_VictorSPX(RobotMap.Cargo.MOTOR);
+    private DoubleSolenoid longCargo = new DoubleSolenoid(1, 0);
 
     public Cargo() {
         super();
@@ -46,14 +41,14 @@ public class Cargo extends Subsystem {
             stop();
         }
         if (cargo == false) {
-            System.out.println("Beep");
             longCargo.set(DoubleSolenoid.Value.kReverse);
+            System.out.println("yeet");
         }
     }
 
     public void rollWheels(double speed) {
-        mCargoHandlerL.set(-speed);
-        mCargoHandlerR.set(speed);
+        mCargoHandlerL.set(speed);
+        mCargoHandlerR.set(-speed);
         mCargoIntake.set(speed);
 
     }

@@ -1,16 +1,10 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Cargo;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Gyro;
-import frc.robot.subsystems.Hatch;
-import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.*;
 import frc.robot.commands.auto.PathTesting;
 import frc.robot.profiling.PathFollower;
 import frc.robot.profiling.PathTracking;
@@ -33,43 +27,43 @@ public class Robot extends TimedRobot {
     public static NetworkTable visionNT;
     public static NetworkTableEntry yawRaw, yawDetected;
     public static double yaw;
-    public static boolean tape;
-    
-    
+    public static boolean tape;    
 
     public void robotInit() {
-        yaw = 0;
-        instance = NetworkTableInstance.getDefault();
-        visionNT = instance.getTable("ChickenVision");
-        yawDetected = visionNT.getEntry("tapedetected");
-        yawRaw = visionNT.getEntry("tapeYaw");
+        // yaw = 0;
         navxGyro = new Gyro();
         swerve = new SwerveDrive(navxGyro);
         hatch = new Hatch();
         elevator = new Elevator();
         climb = new Pneumatics();
-        path = new PathTracking(swerve, navxGyro);
-        follower = new PathFollower();
+        // path = new PathTracking(swerve, navxGyro);
+        // follower = new PathFollower();
         m_oi = new OI();
-        autoCommand = new PathTesting();
+        // autoCommand = new PathTesting();
         cargo = new Cargo();
-        climb.allOut();
     }
 
     @Override
     public void robotPeriodic() {
-        yaw = yawRaw.getDouble(0);
-        tape = yawDetected.getBoolean(false);
-        path.update();
+        // instance = NetworkTableInstance.getDefault();
+        // visionNT = instance.getTable("ChickenVision");
+        // yawDetected = visionNT.getEntry("tapeDetected");
+        // tape = yawDetected.getBoolean(false);
+        // yawRaw = visionNT.getEntry("tapeYaw");
+        // yaw = yawRaw.getDouble(0);
+        // SmartDashboard.putNumber("yawval", yaw);
+        // SmartDashboard.putBoolean("tapeval", tape);
+        // path.update();
         swerve.smartDash();
         hatch.smartdash();
+        elevator.smartDash();
         Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        // path.reset();
-        // autoCommand.start();
+        navxGyro.reset();
+        climb.allOut();
     }
 
     @Override
@@ -78,11 +72,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        climb.allOut();
     }
 
     @Override
     public void teleopPeriodic() {
-        climb.move();
     }
 
     @Override

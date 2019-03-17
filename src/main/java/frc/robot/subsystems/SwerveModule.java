@@ -52,21 +52,10 @@ public class SwerveModule implements PIDSource, PIDOutput {
         driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
         driveController.burnFlash();
         encoder = driveController.getEncoder();
-        // driveController.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-        // 0, 0);
-        // driveController.setSensorPhase(true);
         resetEncoder();
     }
 
     protected void enable() {
-        // driveController.setOpenLoopRampRate(0);
-        // driveController.burnFlash();
-        // driveController.setIdleMode(IdleMode.kBrake);
-        // driveController.burnFlash();
-        // driveController.setSmartCurrentLimit(40);
-        // driveController.burnFlash();
-        // driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
-        // driveController.burnFlash();
         steerPID.enable();
         enabled = true;
     }
@@ -113,13 +102,9 @@ public class SwerveModule implements PIDSource, PIDOutput {
     }
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
     }
 
     public void pidWrite(double output) {
-        // TODO Auto-generated method stub
-        // driveController.set(ControlMode.PercentOutput, output);
         driveController.set(output);
 
     }
@@ -136,8 +121,6 @@ public class SwerveModule implements PIDSource, PIDOutput {
     }
 
     public double getDistance() {
-        // return driveController.getSelectedSensorPosition(0) * distPerPulse -
-        // distZero;
         return encoder.getPosition() * distPerRev - distZero;
     }
 

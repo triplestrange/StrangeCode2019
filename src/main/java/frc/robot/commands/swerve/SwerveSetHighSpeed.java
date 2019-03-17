@@ -12,6 +12,7 @@ public class SwerveSetHighSpeed extends Command {
     @Override
     public void execute() {
         Robot.swerve.setSpeed(100, 100);
+        OI.joy1.setRumble(RumbleType.kLeftRumble, 1);
         OI.joy1.setRumble(RumbleType.kRightRumble, 1);
     }
 
@@ -23,5 +24,7 @@ public class SwerveSetHighSpeed extends Command {
     @Override
     public void end() {
         Robot.swerve.setSpeed(75, 75);
+        OI.joy1.setRumble(RumbleType.kLeftRumble, 0);
+        OI.joy1.setRumble(RumbleType.kRightRumble, 0);
     }
 }
