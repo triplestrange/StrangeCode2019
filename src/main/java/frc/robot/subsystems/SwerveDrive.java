@@ -121,16 +121,16 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
 
     /*****************************************************************************************/
     public void driveWithVision(double yaw, int camNum) {
-        double magnitude = (-OI.joy1.getRawAxis(1) * speed) / 100;
+        double magX = (OI.joy1.getRawAxis(1) * speed) / 100;
+        double magY = (-OI.joy1.getRawAxis(0) * speed) / 100;
+        Vector2D visionVect = new Vector2D(magX, magY);
         if (camNum == 1)
             if (Robot.tape == true) {
-                driveWithOrient(magnitude, 0, (yaw / 100)*1/2, false);
+                driveWithOrient(visionVect.getMagnitude(), 0, (yaw / 100)*0.5, false);
             } else {
-                driveWithOrient(magnitude, 0, 0, false);
+                driveWithOrient(visionVect.getMagnitude(), 0, 0, false);
             }
-
     }
-
     /*****************************************************************************************/
 
     public void setTrans(Vector2D vector) {

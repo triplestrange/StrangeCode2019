@@ -29,15 +29,16 @@ public class RobotMap {
         public static final int BL_ENCODER = 2;
         public static final int BR_ENCODER = 3;
         
-        public final static double FL_ENC_OFFSET = 212.2;
-        public final static double FR_ENC_OFFSET = 173.4;
-        public final static double BL_ENC_OFFSET = 284.4;
-        public final static double BR_ENC_OFFSET = 269.3;
+        //Encoder offsets for real robot
+        // public final static double FL_ENC_OFFSET = 212.2;
+        // public final static double FR_ENC_OFFSET = 173.4;
+        // public final static double BL_ENC_OFFSET = 284.4;
+        // public final static double BR_ENC_OFFSET = 269.3;
 
-        // public final static double FL_ENC_OFFSET = 275.5+324;
-        // public final static double FR_ENC_OFFSET = 165;
-        // public final static double BL_ENC_OFFSET = 142;
-        // public final static double BR_ENC_OFFSET = 290;
+        public final static double FL_ENC_OFFSET = 275.5+324;
+        public final static double FR_ENC_OFFSET = 165;
+        public final static double BL_ENC_OFFSET = 142;
+        public final static double BR_ENC_OFFSET = 290;
 
         public static final boolean ENCODERS_REVERSED = false;
 
@@ -93,13 +94,6 @@ public class RobotMap {
     
     public static class Hatch {
         public final static int hatchMotor = 11;
-        public final static int hatchEncoderPort = 4;
-        public final static int hatchEncoderOffset = 188;
-        // public final static int hatchEncoderOffset = 201;
-
-        public final static int HATCH_LEFT = 240;
-        public final static int HATCH_UP = 180;
-        public final static int HATCH_RIGHT = 120;
 
     }
 

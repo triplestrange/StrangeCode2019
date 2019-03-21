@@ -46,7 +46,6 @@ public class SwerveModule implements PIDSource, PIDOutput {
         steerPID.setContinuous();
         steerPID.disable();
         steerController.setNeutralMode(NeutralMode.Brake);
-        driveController.setOpenLoopRampRate(0.5);
         driveController.setIdleMode(IdleMode.kBrake);
         driveController.setSmartCurrentLimit(40);
         driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);

@@ -18,7 +18,6 @@ public class Robot extends TimedRobot {
     public static Elevator elevator;
     public static Gyro navxGyro;
     public static SwerveDrive swerve;
-    public static Pneumatics climb;
     public static PathTracking path;
     public static PathFollower follower;
     public static Command autoCommand;
@@ -35,7 +34,6 @@ public class Robot extends TimedRobot {
         swerve = new SwerveDrive(navxGyro);
         hatch = new Hatch();
         elevator = new Elevator();
-        climb = new Pneumatics();
         // path = new PathTracking(swerve, navxGyro);
         // follower = new PathFollower();
         m_oi = new OI();
@@ -45,14 +43,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        // instance = NetworkTableInstance.getDefault();
-        // visionNT = instance.getTable("ChickenVision");
-        // yawDetected = visionNT.getEntry("tapeDetected");
-        // tape = yawDetected.getBoolean(false);
-        // yawRaw = visionNT.getEntry("tapeYaw");
-        // yaw = yawRaw.getDouble(0);
-        // SmartDashboard.putNumber("yawval", yaw);
-        // SmartDashboard.putBoolean("tapeval", tape);
+        visionNT = NetworkTableInstance.getDefault().getTable("ChickenVision");
+        yawDetected = visionNT.getEntry("tapeDetected");
+        tape = yawDetected.getBoolean(false);
+        yawRaw = visionNT.getEntry("tapeYaw");
+        yaw = yawRaw.getDouble(0);
+        SmartDashboard.putNumber("yawval", yaw);
+        SmartDashboard.putBoolean("tapeval", tape);
         // path.update();
         swerve.smartDash();
         hatch.smartdash();
@@ -63,7 +60,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         navxGyro.reset();
-        climb.allOut();
     }
 
     @Override
@@ -72,7 +68,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        climb.allOut();
     }
 
     @Override
