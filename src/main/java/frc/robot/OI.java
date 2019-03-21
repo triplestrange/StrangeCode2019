@@ -9,11 +9,13 @@ import frc.robot.commands.swerve.*;
 
 public class OI {
     public static Joystick joy1 = new Joystick(0);
-    Button lockSwerve = new EnabledButton(joy1, RobotMap.Controller.A);
+    Button lockSwerve = new EnabledButton(joy1, RobotMap.Controller.X);
     Button fieldOrient = new EnabledButton(joy1, RobotMap.Controller.RIGHT_BUMPER);
     Button gyroReset = new EnabledButton(joy1, RobotMap.Controller.LEFT_BUMPER);
-    Button runAuto = new EnabledButton(joy1, RobotMap.Controller.B);
-    Button visionButton = new EnabledButton(joy1, RobotMap.Controller.X);
+    Button hatchVision = new EnabledButton(joy1, RobotMap.Controller.B);
+    Button cargoTapeVision = new EnabledButton(joy1, RobotMap.Controller.X);
+    Button cargoVision = new EnabledButton(joy1, RobotMap.Controller.Y);
+    Button runAuto = new EnabledButton(joy1, RobotMap.Controller.RIGHT_FACE);
 
     public static Joystick joy2 = new Joystick(1);
     Button hatchIn = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
@@ -24,7 +26,7 @@ public class OI {
         fieldOrient.whenPressed(new SwerveSetField());
         gyroReset.whenPressed(new SwerveGyroReset());
         runAuto.whenPressed(new PathTesting());
-        visionButton.whileHeld(new SwerveDriveWithVisionRight());
+        hatchVision.whileHeld(new SwerveDriveWithVisionRight());
 
         hatchIn.whenPressed(new HatchPistonIn());
         hatchOut.whenPressed(new HatchPistonOut());

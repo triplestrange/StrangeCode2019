@@ -2,18 +2,16 @@ package frc.robot.subsystems;
 
 import frc.robot.OI;
 import frc.robot.RobotMap;
-import frc.robot.commands.hatch.HatchWithJoy;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hatch extends Subsystem {
 
-    Solenoid piston = new Solenoid(2);
+    Solenoid intakePiston = new Solenoid(RobotMap.Hatch.INTAKE_PISTON);
+    DoubleSolenoid shortPiston = new DoubleSolenoid(RobotMap.Hatch.SHORT_EXTEND, RobotMap.Hatch.SHORT_RETRACT);
+    DoubleSolenoid longPiston = new DoubleSolenoid(RobotMap.Hatch.LONG_EXTEND, RobotMap.Hatch.LONG_RETRACT);
 
     public Hatch() {
     }
@@ -25,11 +23,11 @@ public class Hatch extends Subsystem {
     }
 
     public void grab() {
-        piston.set(true);
+        intakePiston.set(true);
     }
     
     public void place() {
-        piston.set(false);
+        intakePiston.set(false);
     }
 
     @Override
