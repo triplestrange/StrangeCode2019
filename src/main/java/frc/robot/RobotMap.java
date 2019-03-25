@@ -31,15 +31,15 @@ public class RobotMap {
         public static final int BR_ENCODER = 3;
         
         //Encoder offsets for real robot
-        // public final static double FL_ENC_OFFSET = 212.2;
-        // public final static double FR_ENC_OFFSET = 173.4;
-        // public final static double BL_ENC_OFFSET = 284.4;
-        // public final static double BR_ENC_OFFSET = 269.3;
+        public final static double FL_ENC_OFFSET = 212.2;
+        public final static double FR_ENC_OFFSET = 173.4;
+        public final static double BL_ENC_OFFSET = 284.4;
+        public final static double BR_ENC_OFFSET = 269.3;
 
-        public final static double FL_ENC_OFFSET = 275.5+324;
-        public final static double FR_ENC_OFFSET = 165;
-        public final static double BL_ENC_OFFSET = 142;
-        public final static double BR_ENC_OFFSET = 290;
+        // public final static double FL_ENC_OFFSET = 275.5+324;
+        // public final static double FR_ENC_OFFSET = 165;
+        // public final static double BL_ENC_OFFSET = 142;
+        // public final static double BR_ENC_OFFSET = 290;
 
         public static final boolean ENCODERS_REVERSED = false;
 
@@ -86,11 +86,12 @@ public class RobotMap {
         public final static double PEAK_DURATION = 500; // milliseconds
         public final static double CONTINUOUS_LIMIT = 10; // Amps
         
+        public static int START_POSITION = 17038;
         public final static int CARGO_1ROCKET = 16380;
         public final static int CARGO_2ROCKET = 38844;
         public final static int CARGO_3ROCKET = 63424;
         public final static int CARGO_SHIP = 25000;
-        public final static int HATCH_1ROCKET = 0;
+        public final static int HATCH_1ROCKET = 3000;
         public final static int HATCH_2ROCKET = 28731;
         public final static int HATCH_3ROCKET = 54186;
     }
@@ -98,10 +99,8 @@ public class RobotMap {
     public static class Hatch {
         public final static int hatchMotor = 11;
         public final static int INTAKE_PISTON = 2;
-        public final static int LONG_EXTEND = 4;
-        public final static int LONG_RETRACT = 3;
-        public final static int SHORT_EXTEND = 6;
-        public final static int SHORT_RETRACT = 7;
+        public final static int EXTEND = 4;
+        public final static int RETRACT = 3;
     }
 
     public static class Cargo {

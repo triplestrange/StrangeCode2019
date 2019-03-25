@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -26,7 +27,8 @@ public class Robot extends TimedRobot {
     public static NetworkTable visionNT;
     public static NetworkTableEntry yawRaw, yawDetected;
     public static double yaw;
-    public static boolean tape;    
+    public static boolean tape;
+    public static Spark led;
 
     public void robotInit() {
         // yaw = 0;
@@ -39,6 +41,7 @@ public class Robot extends TimedRobot {
         m_oi = new OI();
         // autoCommand = new PathTesting();
         cargo = new Cargo();
+        led = new Spark(0);
     }
 
     @Override
@@ -52,9 +55,20 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("tapeval", tape);
         // path.update();
         swerve.smartDash();
-        hatch.smartdash();
         elevator.smartDash();
         Scheduler.getInstance().run();
+        if (hatch.hatchExtended && hatch.hatchOpen) {
+            led.set(-0.23);
+        }
+        else if (hatch.hatchExtended && !hatch.hatchOpen) {
+            led.set(-0.25);
+        }
+        else if (hatch.hatchOpen) {
+            led.set(-0.21);
+        }
+        else {
+            led.set(-0.45);
+        }
     }
 
     @Override

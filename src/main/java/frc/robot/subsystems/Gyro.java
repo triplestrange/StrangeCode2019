@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Gyro implements PIDSource{
     private static AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private static double offset = 0;
+    private static double offset = 270;
 
     public Gyro() {
         super();
@@ -24,7 +24,7 @@ public class Gyro implements PIDSource{
 
     public void reset() {
         gyro.zeroYaw();
-        offset = 0;
+        offset = 270;
     }
 
     public void set(double angle) {

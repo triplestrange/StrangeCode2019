@@ -16,6 +16,7 @@ public class OI {
     Button cargoTapeVision = new EnabledButton(joy1, RobotMap.Controller.X);
     Button cargoVision = new EnabledButton(joy1, RobotMap.Controller.Y);
     Button runAuto = new EnabledButton(joy1, RobotMap.Controller.RIGHT_FACE);
+    Button hatchExtend = new JoystickAxisButton(joy1, RobotMap.Controller.RT);
 
     public static Joystick joy2 = new Joystick(1);
     Button hatchIn = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
@@ -27,6 +28,7 @@ public class OI {
         gyroReset.whenPressed(new SwerveGyroReset());
         runAuto.whenPressed(new PathTesting());
         hatchVision.whileHeld(new SwerveDriveWithVisionRight());
+        hatchExtend.toggleWhenPressed(new HatchPistonExtend());
 
         hatchIn.whenPressed(new HatchPistonIn());
         hatchOut.whenPressed(new HatchPistonOut());

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.elevator.ElevatorWithJoy;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -31,6 +32,7 @@ public class Elevator extends Subsystem {
         elevator1.enableCurrentLimit(true);
 
         elevator1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.DEFAULT_TIMEOUT);
+        elevator1.setSelectedSensorPosition(RobotMap.Elevator.START_POSITION, 0, RobotMap.DEFAULT_TIMEOUT);
         elevator1.setSensorPhase(false);
         elevator1.setInverted(false);
 
@@ -42,13 +44,16 @@ public class Elevator extends Subsystem {
         elevator1.configPeakOutputForward(1, RobotMap.DEFAULT_TIMEOUT);
         elevator1.configPeakOutputReverse(-1, RobotMap.DEFAULT_TIMEOUT);
 
+        elevator1.configForwardSoftLimitThreshold(RobotMap.Elevator.CARGO_3ROCKET, RobotMap.DEFAULT_TIMEOUT);
+        elevator1.configForwardSoftLimitEnable(true);
+
         elevator1.selectProfileSlot(0, 0);
-        elevator1.config_kF(0, 0.30674662668665667166416791604198, RobotMap.DEFAULT_TIMEOUT);
+        elevator1.config_kF(0, 1023.0/4667, RobotMap.DEFAULT_TIMEOUT);
         elevator1.config_kP(0, 0.1, RobotMap.DEFAULT_TIMEOUT);
         elevator1.config_kI(0, 0, RobotMap.DEFAULT_TIMEOUT);
         elevator1.config_kD(0, 0, RobotMap.DEFAULT_TIMEOUT);
-        elevator1.configMotionCruiseVelocity(3335, RobotMap.DEFAULT_TIMEOUT);
-        elevator1.configMotionAcceleration(3335, RobotMap.DEFAULT_TIMEOUT);
+        elevator1.configMotionCruiseVelocity(4667, RobotMap.DEFAULT_TIMEOUT);
+        elevator1.configMotionAcceleration(4667, RobotMap.DEFAULT_TIMEOUT);
 
         elevator2.follow(elevator1);
         elevator2.setInverted(InvertType.FollowMaster);
@@ -61,8 +66,13 @@ public class Elevator extends Subsystem {
         elevatorMM = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
-        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
-        elevatorMM = true;
+            if (Robot.hatch.hatchExtended) {
+                elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
+            }
+            else {
+                elevator1.set(ControlMode.MotionMagic, 0);
+            }
+            elevatorMM = true;
         }
         if (OI.joy2.getRawButton(RobotMap.Controller.Y)) {
             elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_3ROCKET);
@@ -106,7 +116,11 @@ public class Elevator extends Subsystem {
     }
 
     public boolean clearForCargo() {
-        return getDistance() < RobotMap.Elevator.CARGO_1ROCKET - 2000;
+        return getDistance() < RobotMap.Elevator.CARGO_1ROCKET + 2000;
+    }
+
+    public boolean clearForHatch() {
+        return getDistance() > (RobotMap.Elevator.CARGO_1ROCKET - 2000)/2;
     }
 
     public void cargoElevator() {
