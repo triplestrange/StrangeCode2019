@@ -16,11 +16,11 @@ public class PathTesting extends CommandGroup {
     //          new SwerveWaypoint(-21, 200, Pathfinder.d2r(60), 25),
     //          new SwerveWaypoint(-18, 24, Pathfinder.d2r(270), 180)
     //     ));
-        addSequential(new PathCommand(-96, 48,
+        addSequential(new PathCommand(-201, 68,
             //  new SwerveWaypoint(-96, 48, Pathfinder.d2r(90), 0),
             //  new SwerveWaypoint(-96, 84, Pathfinder.d2r(90), 0),
-             new SwerveWaypoint(-84, 175, Pathfinder.d2r(90), 0),
-             new SwerveWaypoint(-24, 250, Pathfinder.d2r(135), -30)
+             new SwerveWaypoint(-201, 68, Pathfinder.d2r(0), 270),
+             new SwerveWaypoint(-249, 68, Pathfinder.d2r(0), 270)
         ));
         // addSequential(new PathCommand(
         //     new SwerveWaypoint(0, 0, Pathfinder.d2r(90), 0),

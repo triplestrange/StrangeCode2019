@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
     public static double yaw;
     public static boolean tape;
     public static Spark led;
+    public static Climb climb;
 
     public void robotInit() {
         // yaw = 0;
@@ -36,12 +38,13 @@ public class Robot extends TimedRobot {
         swerve = new SwerveDrive(navxGyro);
         hatch = new Hatch();
         elevator = new Elevator();
-        // path = new PathTracking(swerve, navxGyro);
-        // follower = new PathFollower();
+        path = new PathTracking(swerve, navxGyro);
+        follower = new PathFollower();
         m_oi = new OI();
-        // autoCommand = new PathTesting();
+        autoCommand = new PathTesting();
         cargo = new Cargo();
         led = new Spark(0);
+        climb = new Climb();
     }
 
     @Override
@@ -53,7 +56,7 @@ public class Robot extends TimedRobot {
         yaw = yawRaw.getDouble(0);
         SmartDashboard.putNumber("yawval", yaw);
         SmartDashboard.putBoolean("tapeval", tape);
-        // path.update();
+        path.update();
         swerve.smartDash();
         elevator.smartDash();
         Scheduler.getInstance().run();
@@ -69,6 +72,7 @@ public class Robot extends TimedRobot {
         else {
             led.set(-0.45);
         }
+        climb.move();
     }
 
     @Override

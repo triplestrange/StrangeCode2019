@@ -210,9 +210,6 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         if (slow) {
             speed = 15;
             turnRate = 15;
-        // } else if (fast) {
-        //     speed = 100;
-        //     turnRate = 100;
         } else {
             speed = RobotMap.SwerveDrive.SPEED;
             turnRate = RobotMap.SwerveDrive.TURN_RATE;
@@ -224,8 +221,9 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         else if ((Math.abs(x) > .1 || Math.abs(y) > .1 || Math.abs(z) > .1) && drivingField)
             driveField((x * speed) / 100, (-y * speed) / 100, (z * turnRate / 100));
 
-        else
-            driveNormal(0, 0, 0);
+        else if (Robot.follower.isFinished()) {
+            driveNormal(0, 0, 0);            
+        }
     }
 
     public void stop(int module) {

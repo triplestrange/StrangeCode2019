@@ -22,6 +22,7 @@ public class OI {
     Button hatchIn = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
     Button hatchOut = new EnabledButton(joy2, RobotMap.Controller.RIGHT_BUMPER);
 
+    public static Joystick joy4 = new Joystick(3);
     public OI() {
         lockSwerve.whenPressed(new SwerveLock());
         fieldOrient.whenPressed(new SwerveSetField());

@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Gyro implements PIDSource{
     private static AHRS gyro = new AHRS(SPI.Port.kMXP);
+
+    //Offset to start the robot facing on the right
+    //TODO make a selector on the Smart Dashboard for which direction we are facing
     private static double offset = 270;
 
     public Gyro() {
@@ -16,6 +19,10 @@ public class Gyro implements PIDSource{
 
     public double getAngle() {
         return gyro.getAngle() + offset;
+    }
+
+    public double getPitch() {
+        return (double)gyro.getPitch();
     }
 
     public double getRate() {
@@ -35,25 +42,10 @@ public class Gyro implements PIDSource{
     public double pidGet() {
         return getAngle();
     }
-    // public static double angleCorrect() {
-    // return gyro.getAngle() * -.025;
-    // }
 
     @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
-
-    }
+    public void setPIDSourceType(PIDSourceType pidSource) {}
 
     @Override
-    public PIDSourceType getPIDSourceType() {
-        return null;
-	}
-
-    // public double straight(boolean angle) {
-    // if (angle) {
-    // currentangle = gyro.getAngle();
-    // SwerveDrive.angle = false;
-    // }
-    // return (gyro.getAngle() - currentangle) * .015;
-    // }
+    public PIDSourceType getPIDSourceType() {return null;}
 }

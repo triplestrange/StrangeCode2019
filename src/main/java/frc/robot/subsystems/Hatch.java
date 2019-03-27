@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import frc.robot.OI;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -39,5 +38,6 @@ public class Hatch extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
+        //yeet take that 5190
     }
 }
