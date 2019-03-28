@@ -28,29 +28,49 @@ public class Cargo extends Subsystem {
         shortCargo.set(true);
     }
 
-    public void move() {
+    
         double speedin = OI.joy2.getRawAxis(2);
         double speedout = OI.joy2.getRawAxis(3);
         boolean cargo = Robot.elevator.clearForCargo();
-
-        if (speedin > .25 && cargo == true && !Robot.hatch.hatchExtended) {
-            rollWheels(-speedin);
-            longCargo.set(DoubleSolenoid.Value.kForward);
-        } 
-        else if (speedout > .25 && cargo == true) {
-            rollWheels(speedout);
-        }
-        else if (speedout > .25 && cargo == false) {
-            mCargoHandlerL.set(-speedout);
-            mCargoHandlerR.set(speedout);
-        }
-        else {
-            stop();
-        }
-        if (cargo == false) {
-            longCargo.set(DoubleSolenoid.Value.kReverse);
-        }
+    
+    public void rollIn() {
+        cargo = true;
+        longCargo.set(DoubleSolenoid.Value.kForward);
+        rollWheels(-speedin);
     }
+    public void rollOut(){
+        cargo = true;
+        longCargo.set(DoubleSolenoid.Value.kForward);
+        rollWheels(speedout);
+    }
+    public void retract() {
+        cargo = false;
+        longCargo.set(DoubleSolenoid.Value.kReverse);
+    }
+    public void handler() {
+        cargo = false;
+        mCargoHandlerL.set(-speedout);
+        mCargoHandlerR.set(speedout);
+    }
+    
+        // if (speedin > .25 && cargo == true && !Robot.hatch.hatchExtended) {
+        //     rollWheels(-speedin);
+        //     longCargo.set(DoubleSolenoid.Value.kForward);
+        // } 
+        // else if (speedout > .25 && cargo == true) {
+        //     rollWheels(speedout);
+        // }
+        // else if (speedout > .25 && cargo == false) {
+        //     mCargoHandlerL.set(-speedout);
+        //     mCargoHandlerR.set(speedout);
+        // }
+        // else {
+        //     stop();
+        // }
+        // if (cargo == false) {
+        //     longCargo.set(DoubleSolenoid.Value.kReverse);
+        // }
+    
 
     public void rollWheels(double speed) {
         mCargoHandlerL.set(-speed);
