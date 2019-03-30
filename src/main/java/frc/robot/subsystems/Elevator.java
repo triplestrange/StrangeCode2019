@@ -56,57 +56,86 @@ public class Elevator extends Subsystem {
         elevator2.setInverted(InvertType.FollowMaster);
     }
 
-    public void move() {
-        double y = OI.joy2.getRawAxis(1);
-        if (OI.joy2.getRawButton(RobotMap.Controller.B)) {
+        if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
+
+    public void hatch_1rocket() {
+        if (Robot.hatch.hatchExtended) {
+            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
+        }
+        else {
+            elevator1.set(ControlMode.MotionMagic, 0);
+        }
+        elevatorMM = true;
+    }
+    public void hatch_2rocket() {
         elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_2ROCKET);
         elevatorMM = true;
-        }
-        if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
-            if (Robot.hatch.hatchExtended) {
-                elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_1ROCKET);
-            }
-            else {
-                elevator1.set(ControlMode.MotionMagic, 0);
-            }
-            elevatorMM = true;
-        }
-        if (OI.joy2.getRawButton(RobotMap.Controller.Y)) {
-            elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_3ROCKET);
-            elevatorMM = true;
-        }
-        if (OI.joy2.getRawButton(RobotMap.Controller.X)) {
-            elevator1.set(ControlMode.MotionMagic, 0);
-            elevatorMM = true;
-        }
-        if (OI.joy2.getPOV() == 0) {
-        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_3ROCKET);
+    }
+    public void hatch_3rocket() {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.HATCH_3ROCKET);
         elevatorMM = true;
-        }
-        if (OI.joy2.getPOV() == 90) {
-        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_2ROCKET);
+    }
+    public void bottom() {
+        elevator1.set(ControlMode.MotionMagic, 0);
         elevatorMM = true;
-        }
-        if (OI.joy2.getPOV() == 180) {
+    }
+    public void cargo_1rocket() {
         elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_1ROCKET);
         elevatorMM = true;
-        }
-        if (OI.joy2.getPOV() == 270) {
+    }
+    public void cargo_2rocket() {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_2ROCKET);
+        elevatorMM = true;
+    }public void cargo_3rocket() {
+        elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_3ROCKET);
+        elevatorMM = true;
+    }public void cargo_ship() {
         elevator1.set(ControlMode.MotionMagic, RobotMap.Elevator.CARGO_SHIP);
         elevatorMM = true;
-        }
-        if (OI.joy2.getRawButton(RobotMap.Controller.RIGHT_FACE)) {
-            resetEncoder();
-        }
+    }
+    public void right_face(){
+        resetEncoder();
+    }
+    
+    public void move() {
+        double y = OI.joy2.getRawAxis(1);
 
+        if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
+            hatch_1rocket();
+        }
+        else if (OI.joy2.getRawButton(RobotMap.Controller.B)) {
+            hatch_2rocket();
+        }
+        else if (OI.joy2.getRawButton(RobotMap.Controller.Y)) {
+            hatch_3rocket();
+        }
+        else if (OI.joy2.getRawButton(RobotMap.Controller.X)) {
+            bottom();
+        }
+        else if (OI.joy2.getPOV() == 0) {
+            cargo_3rocket();
+        }
+        else if (OI.joy2.getPOV() == 90) {
+            cargo_2rocket();
+        }
+        else if (OI.joy2.getPOV() == 180) {
+            cargo_1rocket();
+        }
+        else if (OI.joy2.getPOV() == 270) {
+            cargo_ship();
+        }
         if (Math.abs(y) > 0.15) {
             elevatorMM = false;
             elevator1.set(-1 * y);
             position = getDistance();
-        } else if (elevatorMM == false) {
+        }
+        else if (elevatorMM == false) {
             elevator1.set(0);
         }
     }
+
+    //     
+
 
     public void resetEncoder() {
         elevator1.setSelectedSensorPosition(0, 0, RobotMap.DEFAULT_TIMEOUT);

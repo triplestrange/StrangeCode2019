@@ -52,7 +52,23 @@ public class Cargo extends Subsystem {
         mCargoHandlerL.set(-speedout);
         mCargoHandlerR.set(speedout);
     }
-    
+    public void move(){
+        if (speedin > .25 && cargo == true && !Robot.hatch.hatchExtended) {
+            rollIn();
+        } 
+        else if (speedout > .25 && cargo == true) {
+            rollOut();
+        }
+        else if (speedout > .25 && cargo == false) {
+            handler();
+        }
+        else {
+                stop();
+        }
+        if (cargo == false) {
+            retract();
+        }
+    }
         // if (speedin > .25 && cargo == true && !Robot.hatch.hatchExtended) {
         //     rollWheels(-speedin);
         //     longCargo.set(DoubleSolenoid.Value.kForward);
