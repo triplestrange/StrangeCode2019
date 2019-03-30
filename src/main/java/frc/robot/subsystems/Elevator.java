@@ -56,7 +56,6 @@ public class Elevator extends Subsystem {
         elevator2.setInverted(InvertType.FollowMaster);
     }
 
-        if (OI.joy2.getRawButton(RobotMap.Controller.A)) {
 
     public void hatch_1rocket() {
         if (Robot.hatch.hatchExtended) {
