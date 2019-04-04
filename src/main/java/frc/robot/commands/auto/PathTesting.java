@@ -2,39 +2,35 @@ package frc.robot.commands.auto;
 
 import frc.robot.profiling.SwerveWaypoint;
 import frc.robot.commands.swerve.*;
-import frc.robot.commands.elevator.ElevatorHatch1;
 import frc.robot.commands.hatch.*;
 import jaci.pathfinder.Pathfinder;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class PathTesting extends CommandGroup {
     public PathTesting() {
-        addParallel(new HatchPistonIn());
-        addParallel(new HatchPistonExtend());
-        addParallel(new ElevatorHatch1());
-        addSequential(new PathCommand(-201, 68,
-            new SwerveWaypoint(-201, 68, Pathfinder.d2r(90), 270),
-            new SwerveWaypoint(-201, 116, Pathfinder.d2r(90), 270),
-            new SwerveWaypoint(-242, 164, Pathfinder.d2r(90), 360),
-            new SwerveWaypoint(-224, 250, Pathfinder.d2r(70), 360)
+        addSequential(new PathCommand(-163, 68,
+            new SwerveWaypoint(-163, 68, Pathfinder.d2r(90), 270),
+            new SwerveWaypoint(-163, 120, Pathfinder.d2r(90), 270),
+            new SwerveWaypoint(-167, 180, Pathfinder.d2r(90), 270)
         ));
-        addSequential(new SwerveDriveVisionForwardsAuto(1.5, 27.5));
-        addSequential(new HatchPistonOut());
-        addSequential(new SwerveDriveVisionReverseAuto(0.75, 25));
-        addSequential(new PathCommand(-225, 250,
-            new SwerveWaypoint(-225, 250, Pathfinder.d2r(250), 360),
-            new SwerveWaypoint(-280, 100, Pathfinder.d2r(270), 90),
-            new SwerveWaypoint(-280, 70, Pathfinder.d2r(270), 90)
+        addSequential(new SwerveDriveVisionForwardsAuto(1, 15));
+        addSequential(new HatchPistonPlace());
+        addSequential(new SwerveDriveVisionReverseAuto(1, 15));
+        addSequential(new PathCommand(-180, 180,
+        new SwerveWaypoint(-280, 175, Pathfinder.d2r(270), 270),
+        new SwerveWaypoint(-277, 100, Pathfinder.d2r(270), 90),
+        new SwerveWaypoint(-277, 60, Pathfinder.d2r(270), 90)
         ));
-        addSequential(new SwerveDriveVisionForwardsAuto(0.75, 35));
-        addSequential(new HatchPistonIn());
-        addSequential(new PathCommand(-280, 13, 
-            new SwerveWaypoint(-280, 13, Pathfinder.d2r(90), 90),
-            new SwerveWaypoint(-280, 61, Pathfinder.d2r(90), 90),
-            new SwerveWaypoint(-233, 150, Pathfinder.d2r(70), 0),
-            new SwerveWaypoint(-225, 269, Pathfinder.d2r(90), 0)));
+        addSequential(new SwerveDriveVisionForwardsAuto(1.75, 20));
+        addSequential(new HatchPistonGrab());
+        addSequential(new PathCommand(-260, 22, 
+            new SwerveWaypoint(-260, 22, Pathfinder.d2r(90), 90),
+                new SwerveWaypoint(-260, 102, Pathfinder.d2r(90), 90),
+                new SwerveWaypoint(-236, 227, Pathfinder.d2r(90), 120),
+                new SwerveWaypoint(-252, 245, Pathfinder.d2r(150), 120),
+                new SwerveWaypoint(-262, 262, Pathfinder.d2r(180), 120)));
         addSequential(new SwerveDriveVisionForwardsAuto(2, 15));
-        addSequential(new HatchPistonOut());
+        addSequential(new HatchPistonPlace());
         addSequential(new SwerveDriveVisionReverseAuto(1, 15));
         // addSequential(new PathCommand(-280, 250, 
         // new SwerveWaypoint(-280, 250, Pathfinder.d2r(0), 116),

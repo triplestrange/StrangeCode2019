@@ -126,7 +126,7 @@ public class Elevator extends Subsystem {
     }
 
     public boolean clearForHatch() {
-        return getDistance() > (RobotMap.Elevator.CARGO_1ROCKET - 2000) / 2;
+        return getDistance() > (RobotMap.Elevator.CARGO_1ROCKET) / 2;
     }
 
     public boolean getmm() {

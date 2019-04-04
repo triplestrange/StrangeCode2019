@@ -3,18 +3,13 @@ package frc.robot.commands.swerve;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class SwerveRotate extends Command{
+public class SwerveRotate extends Command {
     private double angle, speed;
-    
 
     public SwerveRotate(double angle, double speed) {
         requires(Robot.swerve);
         this.angle = angle;
         this.speed = speed;
-    }
-
-    @Override
-    public void initialize() {
     }
 
     @Override

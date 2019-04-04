@@ -1,8 +1,6 @@
 package frc.robot.commands.elevator;
 
-import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorCargo1 extends Command {

@@ -61,7 +61,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         for (SwerveModule module : modules)
             module.driveController.setIdleMode(IdleMode.kCoast);
     }
-    
+
     public void setBrake() {
         for (SwerveModule module : modules)
             module.driveController.setIdleMode(IdleMode.kBrake);
@@ -139,29 +139,30 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
             } else {
                 driveWithOrient(visionVect.getMagnitude(), 0, 0, false);
             }
-        }
-        else {
+        } else {
             if (Robot.tape == true && yaw != 0) {
-                driveWithOrient(visionVect.getMagnitude()*(-1), 0, ((yaw / Math.abs(yaw)) * (Math.sqrt(Math.abs(yaw)))) / 100, false);
+                driveWithOrient(visionVect.getMagnitude() * (-1), 0,
+                        ((yaw / Math.abs(yaw)) * (Math.sqrt(Math.abs(yaw)))) / 100, false);
             } else {
-                driveWithOrient(visionVect.getMagnitude()*(-1), 0, 0, false);
+                driveWithOrient(visionVect.getMagnitude() * (-1), 0, 0, false);
             }
         }
     }
+
     /*****************************************************************************************/
     /*****************************************************************************************/
     public void autoDriveWithVision(double yaw, boolean forwards, double autoSpeed) {
         if (forwards) {
             if (Robot.tape == true && yaw != 0) {
-                driveWithOrient(autoSpeed/100, 0,
-                        ((yaw / Math.abs(yaw)) * ((Math.sqrt(Math.abs(yaw)))) / 100)*1.25, false);
+                driveWithOrient(autoSpeed / 100, 0, ((yaw / Math.abs(yaw)) * ((Math.sqrt(Math.abs(yaw)))) / 100) * 1.25,
+                        false);
             } else {
-                driveWithOrient(autoSpeed/100, 0, 0, false);
+                driveWithOrient(autoSpeed / 100, 0, 0, false);
             }
         } else {
             if (Robot.tape == true && yaw != 0) {
-                driveWithOrient(autoSpeed/100 * (-1), 0,
-                        ((yaw / Math.abs(yaw)) * ((Math.sqrt(Math.abs(yaw)))) / 100)*1.25, false);
+                driveWithOrient(autoSpeed / 100 * (-1), 0,
+                        ((yaw / Math.abs(yaw)) * ((Math.sqrt(Math.abs(yaw)))) / 100) * 1.25, false);
             } else {
                 driveWithOrient(autoSpeed / 100 * (-1), 0, 0, false);
             }
@@ -242,15 +243,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         double x = (OI.joy1.getRawAxis(0));
         double y = (OI.joy1.getRawAxis(1));
         double z = (OI.joy1.getRawAxis(4));
-        boolean slow = OI.joy1.getRawAxis(2) > 0.1;
-        if (slow) {
-            speed = 15;
-            turnRate = 15;
-        } else {
-            speed = RobotMap.SwerveDrive.SPEED;
-            turnRate = RobotMap.SwerveDrive.TURN_RATE;
-        }
-
+        
         if ((Math.abs(x) > .1 || Math.abs(y) > .1 || Math.abs(z) > .1) && !drivingField)
             driveNormal((x * speed) / 100, (-y * speed) / 100, (z * turnRate / 100));
 
@@ -258,7 +251,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
             driveField((x * speed) / 100, (-y * speed) / 100, (z * turnRate / 100));
 
         else if (Robot.follower.isFinished()) {
-            driveNormal(0, 0, 0);            
+            driveNormal(0, 0, 0);
         }
     }
 

@@ -14,10 +14,6 @@ public class HatchPistonExtend extends Command {
     }
 
     @Override
-    protected void execute() {
-    }
-
-    @Override
     protected boolean isFinished() {
         return false;
     }

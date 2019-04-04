@@ -2,6 +2,7 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class SwerveSetLowSpeed extends Command {
     public SwerveSetLowSpeed() {
@@ -19,6 +20,6 @@ public class SwerveSetLowSpeed extends Command {
 
     @Override
     public void end() {
-        Robot.swerve.setSpeed(75, 75);
+        Robot.swerve.setSpeed(RobotMap.SwerveDrive.SPEED, RobotMap.SwerveDrive.TURN_RATE);
     }
 }

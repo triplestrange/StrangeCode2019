@@ -2,13 +2,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.POVButton;
 import frc.robot.util.buttons.*;
-import frc.robot.commands.auto.PathTesting;
+import frc.robot.commands.auto.*;
 import frc.robot.commands.cargo.*;
 import frc.robot.commands.hatch.*;
 import frc.robot.commands.swerve.*;
-import frc.robot.subsystems.Hatch;
 import frc.robot.commands.elevator.*;
 
 public class OI {
@@ -16,10 +14,11 @@ public class OI {
     Button lockSwerve = new EnabledButton(joy1, RobotMap.Controller.X);
     Button fieldOrient = new EnabledButton(joy1, RobotMap.Controller.RIGHT_BUMPER);
     Button gyroReset = new EnabledButton(joy1, RobotMap.Controller.LEFT_BUMPER);
-    Button visionFoward = new EnabledButton(joy1, RobotMap.Controller.B);
-    Button visionBack = new EnabledButton(joy1, RobotMap.Controller.A);
+    Button visionFoward = new JoystickAxisButton(joy1, RobotMap.Controller.LT);
+    Button visionBack = new JoystickAxisButton(joy1, RobotMap.Controller.RT);
     Button runAuto = new EnabledButton(joy1, RobotMap.Controller.RIGHT_FACE);
-    Button hatchExtend = new JoystickAxisButton(joy1, RobotMap.Controller.RT);
+    Button hatchExtend = new EnabledButton(joy1, RobotMap.Controller.LEFT_FACE);
+    Button slow = new EnabledButton(joy1, RobotMap.Controller.JOY_RIGHT);
 
     public static Joystick joy2 = new Joystick(1);
     Button hatchIn = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
@@ -33,10 +32,12 @@ public class OI {
     Button cargoShip = new JoystickPOVButton(joy2, 270);
     Button cargoIntake = new JoystickAxisButton(joy2, RobotMap.Controller.LT);
     Button cargoShoot = new JoystickAxisButton(joy2, RobotMap.Controller.RT);
-    Button resetEncoderr = new EnabledButton(joy2, RobotMap.Controller.RIGHT_FACE);
+    Button resetEncoder = new EnabledButton(joy2, RobotMap.Controller.RIGHT_FACE);
 
     public static Joystick joy4 = new Joystick(3);
+
     public OI() {
+        slow.whileHeld(new SwerveSetLowSpeed());
         lockSwerve.whenPressed(new SwerveLock());
         fieldOrient.whenPressed(new SwerveSetField());
         gyroReset.whenPressed(new SwerveGyroReset());
@@ -45,26 +46,22 @@ public class OI {
         visionBack.whileHeld(new SwerveDriveVisionReverse());
         hatchExtend.toggleWhenPressed(new HatchPistonExtend());
 
-        hatchIn.whenPressed(new HatchPistonIn());
-        hatchOut.whenPressed(new HatchPistonOut());
-        hatch2.whenPressed(new ElevatorHatch2());
-        hatch3.whenPressed(new ElevatorHatch3());
+        hatchIn.whenPressed(new HatchPistonGrab());
+        hatchOut.whenPressed(new HatchPistonPlace());
+        cargoIntake.whileHeld(new CargoIn());
+        cargoShoot.whileHeld(new CargoOut());
         if (Robot.hatch.hatchExtended) {
             hatch1.whenPressed(new ElevatorHatch1());
         }
         else {
             hatch1.whenPressed(new ElevatorCargoGround());
         }
+        hatch2.whenPressed(new ElevatorHatch2());
+        hatch3.whenPressed(new ElevatorHatch3());
         cargo1.whenPressed(new ElevatorCargo1());
         cargo2.whenPressed(new ElevatorCargo2());
         cargo3.whenPressed(new ElevatorCargo3());
         cargoShip.whenPressed(new ElevatorCargoShip());
-        cargoIntake.whileHeld(new CargoHandlerIn());
-        cargoIntake.whileHeld(new CargoIntakeIn());
-        cargoIntake.whileHeld(new CargoLongExtend());
-        cargoShoot.whileHeld(new CargoHandlerOut());
-        cargoShoot.whileHeld(new CargoIntakeOut());
-        cargoShoot.whileHeld(new CargoLongRetract());
-        resetEncoderr.whenPressed(new ElevatorReset());
+        resetEncoder.whenPressed(new ElevatorReset());
     }
 }
