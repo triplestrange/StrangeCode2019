@@ -59,7 +59,6 @@ public class Cargo extends Subsystem {
         mCargoHandlerL.set(-speed);
         mCargoHandlerR.set(speed);
         mCargoIntake.set(speed);
-
     }
 
     public void rollIntake(double speed) {

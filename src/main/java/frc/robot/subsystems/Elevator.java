@@ -54,6 +54,7 @@ public class Elevator extends Subsystem {
         elevator2.setInverted(InvertType.FollowMaster);
     }
 
+
     public void smartDash() {
         SmartDashboard.putNumber("Elevator Encoder", getDistance());
         SmartDashboard.putBoolean("Clear for Cargo", clearForCargo());
