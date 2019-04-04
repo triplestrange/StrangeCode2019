@@ -6,12 +6,12 @@ import frc.robot.RobotMap;
 import frc.robot.commands.swerve.*;
 import frc.robot.profiling.TrapezoidProfile;
 import frc.robot.profiling.ProfileFollower;
-import frc.robot.subsystems.Gyro;
 import frc.robot.util.*;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     public ProfileFollower swerveMP = new ProfileFollower(.008, 0.0, 0.15, 0, 0.02, this, this);
     private Vector2D tankVector2D;
-    private Gyro navx;
     public final SwerveModule[] modules = new SwerveModule[] {
             // front left swerve module
             new SwerveModule(new CANSparkMax(RobotMap.SwerveDrive.FL_DRIVE, MotorType.kBrushless),
@@ -49,14 +48,23 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
             turnRate = RobotMap.SwerveDrive.TURN_RATE;
     private boolean drivingField = true, visionOn = false;
 
-    public SwerveDrive(Gyro navxGyro) {
+    public SwerveDrive() {
         enable();
-        navx = navxGyro;
     }
 
     public void setPivot(double pivotX, double pivotY) {
         this.pivX = pivotX;
         this.pivY = pivotY;
+    }
+
+    public void setCoast() {
+        for (SwerveModule module : modules)
+            module.driveController.setIdleMode(IdleMode.kCoast);
+    }
+    
+    public void setBrake() {
+        for (SwerveModule module : modules)
+            module.driveController.setIdleMode(IdleMode.kBrake);
     }
 
     public void debugMode() {
@@ -120,17 +128,46 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
     }
 
     /*****************************************************************************************/
-    public void driveWithVision(double yaw, int camNum) {
+    public void driveWithVision(double yaw, boolean forwards) {
         double magX = (OI.joy1.getRawAxis(1) * speed) / 100;
         double magY = (-OI.joy1.getRawAxis(0) * speed) / 100;
         Vector2D visionVect = new Vector2D(magX, magY);
-        if (camNum == 1)
+        if (forwards) {
             if (Robot.tape == true && yaw != 0) {
-                driveWithOrient(visionVect.getMagnitude(), 0, ((yaw/Math.abs(yaw))*(Math.sqrt(Math.abs(yaw))))/100, false);
+                driveWithOrient(visionVect.getMagnitude(), 0,
+                        ((yaw / Math.abs(yaw)) * (Math.sqrt(Math.abs(yaw)))) / 100, false);
             } else {
                 driveWithOrient(visionVect.getMagnitude(), 0, 0, false);
             }
+        }
+        else {
+            if (Robot.tape == true && yaw != 0) {
+                driveWithOrient(visionVect.getMagnitude()*(-1), 0, ((yaw / Math.abs(yaw)) * (Math.sqrt(Math.abs(yaw)))) / 100, false);
+            } else {
+                driveWithOrient(visionVect.getMagnitude()*(-1), 0, 0, false);
+            }
+        }
     }
+    /*****************************************************************************************/
+    /*****************************************************************************************/
+    public void autoDriveWithVision(double yaw, boolean forwards, double autoSpeed) {
+        if (forwards) {
+            if (Robot.tape == true && yaw != 0) {
+                driveWithOrient(autoSpeed/100, 0,
+                        ((yaw / Math.abs(yaw)) * ((Math.sqrt(Math.abs(yaw)))) / 100)*1.25, false);
+            } else {
+                driveWithOrient(autoSpeed/100, 0, 0, false);
+            }
+        } else {
+            if (Robot.tape == true && yaw != 0) {
+                driveWithOrient(autoSpeed/100 * (-1), 0,
+                        ((yaw / Math.abs(yaw)) * ((Math.sqrt(Math.abs(yaw)))) / 100)*1.25, false);
+            } else {
+                driveWithOrient(autoSpeed / 100 * (-1), 0, 0, false);
+            }
+        }
+    }
+
     /*****************************************************************************************/
 
     public void setTrans(Vector2D vector) {
@@ -159,7 +196,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
      */
 
     private Vector2D correctOrientationVector2D(double x, double y) {
-        double angle = navx.getAngle() * Math.PI / 180;
+        double angle = Robot.navxGyro.getAngle() * Math.PI / 180;
         return new Vector2D(x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle));
     }
 
@@ -206,7 +243,6 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         double y = (OI.joy1.getRawAxis(1));
         double z = (OI.joy1.getRawAxis(4));
         boolean slow = OI.joy1.getRawAxis(2) > 0.1;
-        // boolean fast = OI.joy1.getRawAxis(3) > 0.1;
         if (slow) {
             speed = 15;
             turnRate = 15;
@@ -238,7 +274,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putNumber("BR", modules[3].getAngle() * 360 / (2 * Math.PI));
         SmartDashboard.putNumber("FLDrive", modules[1].getDistance());
         SmartDashboard.putBoolean("FieldOrient", drivingField);
-        SmartDashboard.putNumber("Gyro", navx.getAngle());
+        SmartDashboard.putNumber("Gyro", Robot.navxGyro.getAngle());
     }
 
     public void runProfile(double angle, TrapezoidProfile profile) {
@@ -248,13 +284,13 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         modules[3].resetEncoder();
         swerveMP.startProfile(profile);
         mpangle = angle;
-        gyroangle = navx.getAngle();
+        gyroangle = Robot.navxGyro.getAngle();
     }
 
     @Override
     public void pidWrite(double output) {
         driveNormal(output * Math.sin(mpangle * Math.PI / 180), output * Math.cos(mpangle * Math.PI / 180),
-                ((gyroangle - navx.getAngle()) * 0.01));
+                ((gyroangle - Robot.navxGyro.getAngle()) * 0.01));
     }
 
     @Override

@@ -3,14 +3,14 @@ package frc.robot.commands.swerve;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class SwerveDriveWithVisionRight extends Command {
-    public SwerveDriveWithVisionRight() {
+public class SwerveDriveVisionForwards extends Command {
+    public SwerveDriveVisionForwards() {
         requires(Robot.swerve);
     }
 
     @Override
     public void execute() {
-        Robot.swerve.driveWithVision(Robot.yaw, 1);
+        Robot.swerve.driveWithVision(Robot.yaw, true);
     }
 
     @Override

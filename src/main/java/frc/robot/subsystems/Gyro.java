@@ -21,7 +21,7 @@ public class Gyro implements PIDSource{
         return gyro.getAngle() + offset;
     }
 
-    public double getPitch() {
+    public double getTilt() {
         return (double)gyro.getPitch();
     }
 

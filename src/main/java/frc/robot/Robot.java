@@ -31,20 +31,21 @@ public class Robot extends TimedRobot {
     public static boolean tape;
     public static Spark led;
     public static Climb climb;
+    public static Compressor succ;
 
     public void robotInit() {
-        // yaw = 0;
         navxGyro = new Gyro();
-        swerve = new SwerveDrive(navxGyro);
+        swerve = new SwerveDrive();
         hatch = new Hatch();
         elevator = new Elevator();
-        path = new PathTracking(swerve, navxGyro);
+        path = new PathTracking();
         follower = new PathFollower();
-        m_oi = new OI();
         autoCommand = new PathTesting();
         cargo = new Cargo();
         led = new Spark(0);
         climb = new Climb();
+        succ = new Compressor();
+        m_oi = new OI();
     }
 
     @Override
@@ -72,12 +73,17 @@ public class Robot extends TimedRobot {
         else {
             led.set(-0.45);
         }
-        climb.move();
+climb.move();
     }
 
     @Override
     public void autonomousInit() {
+        Robot.elevator.elevator1.setSelectedSensorPosition(RobotMap.Elevator.START_POSITION, 0, RobotMap.DEFAULT_TIMEOUT);
+        succ.setClosedLoopControl(false);
+        succ.stop();
         navxGyro.reset();
+        autoCommand.start();
+        swerve.setCoast();
     }
 
     @Override
@@ -86,6 +92,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        succ.setClosedLoopControl(true);
+        swerve.setBrake();
     }
 
     @Override

@@ -10,7 +10,7 @@ public class HatchPistonIn extends Command {
 
   @Override
     protected void initialize() {
-      Robot.hatch.grab();
+      Robot.hatch.place();
   }
 
   @Override

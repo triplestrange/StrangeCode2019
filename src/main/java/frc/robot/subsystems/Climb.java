@@ -1,13 +1,7 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -15,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -31,13 +25,41 @@ public class Climb extends PIDSubsystem{
         climb.configFactoryDefault();
         wheels.configFactoryDefault();
         climb.setNeutralMode(NeutralMode.Brake);
+        wheels.setNeutralMode(NeutralMode.Brake);
+        climb.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.DEFAULT_TIMEOUT);
+        climb.setSelectedSensorPosition(0, 0, RobotMap.DEFAULT_TIMEOUT);
+        climb.setSensorPhase(true);
+        climb.setInverted(true);
+        climb.selectProfileSlot(0, 0);
+        climb.config_kF(0, 1023.0 / 1166, RobotMap.DEFAULT_TIMEOUT);
+        climb.config_kP(0, 0.1, RobotMap.DEFAULT_TIMEOUT);
+        climb.config_kI(0, 0, RobotMap.DEFAULT_TIMEOUT);
+        climb.config_kD(0, 0, RobotMap.DEFAULT_TIMEOUT);
+        climb.configMotionCruiseVelocity(1166, RobotMap.DEFAULT_TIMEOUT);
+        climb.configMotionAcceleration(1166, RobotMap.DEFAULT_TIMEOUT);
+
     }
+
 
     @Override
     public void initDefaultCommand() {
     }
 
+    // public void prepareClimb() {
+    //     climb.set(ControlMode.MotionMagic, demand);
+    // }
+    public void lift() {
+        climbThings.set(Value.kForward);
+        setSetpoint(0);
+        enable();
+    }
+
+    public void diablePID() {
+        disable();
+    }
+
     public void move() {
+        SmartDashboard.putNumber("ClimbEncoder", climb.getSelectedSensorPosition());
         if (OI.joy4.getRawButton(RobotMap.Controller.A)) {
             climbThings.set(Value.kForward);
         }
@@ -50,15 +72,11 @@ public class Climb extends PIDSubsystem{
 
     @Override
     protected double returnPIDInput() {
-        // Return your input value for the PID loop
-        // e.g. a sensor, like a potentiometer:
-        // yourPot.getAverageVoltage() / kYourMaxVoltage;
-        return Robot.navxGyro.getPitch();
+        return Robot.navxGyro.getTilt();
     }
 
     @Override
     protected void usePIDOutput(double output) {
-        // Use output to drive your system, like a motor
-        // e.g. yourMotor.set(output);
+        climb.set(ControlMode.PercentOutput, output);
     }
 }

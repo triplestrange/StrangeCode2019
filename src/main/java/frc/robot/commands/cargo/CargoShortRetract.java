@@ -5,19 +5,19 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CargoWithJoy extends Command {
+public class CargoShortRetract extends Command {
     
-    public CargoWithJoy() {
+    public CargoShortRetract() {
         requires(Robot.cargo);
     }
 
     @Override
     public void execute() {
-       double y = OI.joy2.getRawAxis(RobotMap.Controller.RY);
-       Robot.cargo.joyControl(y);
+        Robot.cargo.retractShort();
     }
+
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

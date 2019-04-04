@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
 import frc.robot.commands.cargo.CargoWithJoy;
-import frc.robot.OI;
-import frc.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -28,49 +26,34 @@ public class Cargo extends Subsystem {
         shortCargo.set(true);
     }
 
-    
-        double speedin = OI.joy2.getRawAxis(2);
-        double speedout = OI.joy2.getRawAxis(3);
-        boolean cargo = Robot.elevator.clearForCargo();
-    
-    public void rollIn() {
-        cargo = true;
-        longCargo.set(DoubleSolenoid.Value.kForward);
-        rollWheels(-speedin);
+    public void joyControl(double y) {
+        if (y > 0.35) {
+            longCargo.set(DoubleSolenoid.Value.kForward);
+        } else if (y < 0.35) {
+            longCargo.set(DoubleSolenoid.Value.kReverse);
+        }
     }
-    public void rollOut(){
-        cargo = true;
+
+    public void extendLong() {
         longCargo.set(DoubleSolenoid.Value.kForward);
-        rollWheels(speedout);
     }
-    public void retract() {
-        cargo = false;
+
+    public void retractLong() {
         longCargo.set(DoubleSolenoid.Value.kReverse);
     }
-    public void handler() {
-        cargo = false;
-        mCargoHandlerL.set(-speedout);
-        mCargoHandlerR.set(speedout);
+
+    public void extendShort() {
+        shortCargo.set(true);
     }
-    
-        // if (speedin > .25 && cargo == true && !Robot.hatch.hatchExtended) {
-        //     rollWheels(-speedin);
-        //     longCargo.set(DoubleSolenoid.Value.kForward);
-        // } 
-        // else if (speedout > .25 && cargo == true) {
-        //     rollWheels(speedout);
-        // }
-        // else if (speedout > .25 && cargo == false) {
-        //     mCargoHandlerL.set(-speedout);
-        //     mCargoHandlerR.set(speedout);
-        // }
-        // else {
-        //     stop();
-        // }
-        // if (cargo == false) {
-        //     longCargo.set(DoubleSolenoid.Value.kReverse);
-        // }
-    
+
+    public void retractShort() {
+        shortCargo.set(false);
+    }
+
+    public void handler(double speed) {
+        mCargoHandlerL.set(speed);
+        mCargoHandlerR.set(-speed);
+    }
 
     public void rollWheels(double speed) {
         mCargoHandlerL.set(-speed);
@@ -78,6 +61,16 @@ public class Cargo extends Subsystem {
         mCargoIntake.set(speed);
 
     }
+
+    public void rollIntake(double speed) {
+        mCargoIntake.set(-speed);
+    }
+    
+    public void rollHandler(double speed) {
+        mCargoHandlerL.set(speed);
+        mCargoHandlerR.set(-speed);
+    }
+
     public void stop() {
         rollWheels(0);
     }
