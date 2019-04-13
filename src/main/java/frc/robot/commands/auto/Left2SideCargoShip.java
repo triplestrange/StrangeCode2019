@@ -7,8 +7,8 @@ import frc.robot.commands.hatch.*;
 import jaci.pathfinder.Pathfinder;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class SideCargo extends CommandGroup {
-    public SideCargo() {
+public class Left2SideCargoShip extends CommandGroup {
+    public Left2SideCargoShip() {
         addParallel(new HatchPistonGrab());
         addParallel(new HatchPistonExtend());
         addParallel(new ElevatorHatch1());

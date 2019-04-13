@@ -2,12 +2,16 @@ package frc.robot.commands.auto;
 
 import frc.robot.profiling.SwerveWaypoint;
 import frc.robot.commands.swerve.*;
+import frc.robot.commands.elevator.ElevatorHatch1;
 import frc.robot.commands.hatch.*;
 import jaci.pathfinder.Pathfinder;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class PathTesting extends CommandGroup {
-    public PathTesting() {
+public class FLCargoBackRocket extends CommandGroup {
+    public FLCargoBackRocket() {
+        addParallel(new HatchPistonGrab());
+        addParallel(new HatchPistonExtend());
+        addParallel(new ElevatorHatch1());
         addSequential(new PathCommand(-163, 68,
             new SwerveWaypoint(-163, 68, Pathfinder.d2r(90), 270),
             new SwerveWaypoint(-163, 120, Pathfinder.d2r(90), 270),
@@ -19,7 +23,7 @@ public class PathTesting extends CommandGroup {
         addSequential(new PathCommand(-180, 180,
         new SwerveWaypoint(-280, 175, Pathfinder.d2r(270), 270),
         new SwerveWaypoint(-277, 100, Pathfinder.d2r(270), 90),
-        new SwerveWaypoint(-277, 60, Pathfinder.d2r(270), 90)
+        new SwerveWaypoint(-280, 60, Pathfinder.d2r(270), 90)
         ));
         addSequential(new SwerveDriveVisionForwardsAuto(1.75, 20));
         addSequential(new HatchPistonGrab());

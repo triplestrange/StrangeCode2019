@@ -5,13 +5,14 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import frc.robot.util.buttons.*;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.cargo.*;
+import frc.robot.commands.climb.*;
 import frc.robot.commands.hatch.*;
 import frc.robot.commands.swerve.*;
 import frc.robot.commands.elevator.*;
 
 public class OI {
     public static Joystick joy1 = new Joystick(0);
-    Button lockSwerve = new EnabledButton(joy1, RobotMap.Controller.X);
+    Button lockSwerve = new EnabledButton(joy1, RobotMap.Controller.A);
     Button fieldOrient = new EnabledButton(joy1, RobotMap.Controller.RIGHT_BUMPER);
     Button gyroReset = new EnabledButton(joy1, RobotMap.Controller.LEFT_BUMPER);
     Button visionFoward = new JoystickAxisButton(joy1, RobotMap.Controller.LT);
@@ -19,10 +20,13 @@ public class OI {
     Button runAuto = new EnabledButton(joy1, RobotMap.Controller.RIGHT_FACE);
     Button hatchExtend = new EnabledButton(joy1, RobotMap.Controller.LEFT_FACE);
     Button slow = new EnabledButton(joy1, RobotMap.Controller.JOY_RIGHT);
+    // Button prepare = new EnabledButton(joy1, RobotMap.Controller.X);
+    // Button climb = new EnabledButton(joy1, RobotMap.Controller.Y);
+    // Button retract = new EnabledButton(joy1, RobotMap.Controller.B);
 
     public static Joystick joy2 = new Joystick(1);
-    Button hatchIn = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
-    Button hatchOut = new EnabledButton(joy2, RobotMap.Controller.RIGHT_BUMPER);
+    Button hatchGrab = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
+    Button hatchPlace = new EnabledButton(joy2, RobotMap.Controller.RIGHT_BUMPER);
     Button hatch1 = new EnabledButton(joy2, RobotMap.Controller.A);
     Button hatch2 = new EnabledButton(joy2, RobotMap.Controller.B);
     Button hatch3 = new EnabledButton(joy2, RobotMap.Controller.Y);
@@ -35,19 +39,21 @@ public class OI {
     Button resetEncoder = new EnabledButton(joy2, RobotMap.Controller.RIGHT_FACE);
 
     public static Joystick joy4 = new Joystick(3);
-
     public OI() {
         slow.whileHeld(new SwerveSetLowSpeed());
         lockSwerve.whenPressed(new SwerveLock());
         fieldOrient.whenPressed(new SwerveSetField());
         gyroReset.whenPressed(new SwerveGyroReset());
-        runAuto.whenPressed(new PathTesting());
+        runAuto.whileHeld(new ClimbRunWheels());
         visionFoward.whileHeld(new SwerveDriveVisionForwards());
         visionBack.whileHeld(new SwerveDriveVisionReverse());
         hatchExtend.toggleWhenPressed(new HatchPistonExtend());
+        // prepare.whenPressed(new ClimbPrepare());
+        // climb.whenPressed(new ClimbDeployLift());
+        // retract.whenPressed(new ClimbRetract());
 
-        hatchIn.whenPressed(new HatchPistonGrab());
-        hatchOut.whenPressed(new HatchPistonPlace());
+        hatchGrab.whenPressed(new HatchPistonGrab());
+        hatchPlace.whenPressed(new HatchPistonPlace());
         cargoIntake.whileHeld(new CargoIn());
         cargoShoot.whileHeld(new CargoOut());
         if (Robot.hatch.hatchExtended) {

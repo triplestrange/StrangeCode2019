@@ -22,7 +22,7 @@ public class Gyro implements PIDSource{
     }
 
     public double getTilt() {
-        return (double)gyro.getPitch();
+        return (double)gyro.getPitch()-3.3;
     }
 
     public double getRate() {

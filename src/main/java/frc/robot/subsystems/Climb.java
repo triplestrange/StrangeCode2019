@@ -21,7 +21,7 @@ public class Climb extends PIDSubsystem{
     public DoubleSolenoid climbThings = new DoubleSolenoid(RobotMap.Climb.CLIMB_EXTEND, RobotMap.Climb.CLIMB_RETRACT);
     
     public Climb() {
-        super("Climb", 0.1, 0, 0);
+        super("Climb", -0.1, 0, 0);
         climb.configFactoryDefault();
         wheels.configFactoryDefault();
         climb.setNeutralMode(NeutralMode.Brake);
@@ -31,12 +31,12 @@ public class Climb extends PIDSubsystem{
         climb.setSensorPhase(true);
         climb.setInverted(true);
         climb.selectProfileSlot(0, 0);
-        climb.config_kF(0, 1023.0 / 1166, RobotMap.DEFAULT_TIMEOUT);
+        climb.config_kF(0, 1023.0 / 39875, RobotMap.DEFAULT_TIMEOUT);
         climb.config_kP(0, 0.1, RobotMap.DEFAULT_TIMEOUT);
         climb.config_kI(0, 0, RobotMap.DEFAULT_TIMEOUT);
         climb.config_kD(0, 0, RobotMap.DEFAULT_TIMEOUT);
-        climb.configMotionCruiseVelocity(1166, RobotMap.DEFAULT_TIMEOUT);
-        climb.configMotionAcceleration(1166, RobotMap.DEFAULT_TIMEOUT);
+        climb.configMotionCruiseVelocity(39875, RobotMap.DEFAULT_TIMEOUT);
+        climb.configMotionAcceleration(39875/2, RobotMap.DEFAULT_TIMEOUT);
 
     }
 
@@ -45,31 +45,58 @@ public class Climb extends PIDSubsystem{
     public void initDefaultCommand() {
     }
 
-    // public void prepareClimb() {
-    //     climb.set(ControlMode.MotionMagic, demand);
-    // }
+    public void prepareClimb() {
+        climb.set(ControlMode.MotionMagic, RobotMap.Climb.PREPARE_CLIMB);
+    }
+
     public void lift() {
         climbThings.set(Value.kForward);
-        setSetpoint(0);
+        setSetpoint(-8);
         enable();
     }
 
-    public void diablePID() {
+    public void retract() {
         disable();
+        wheels.set(ControlMode.PercentOutput, 0);
+        climbThings.set(Value.kReverse);
     }
 
+    public void RunWheels() {
+        wheels.set(ControlMode.PercentOutput, -75);
+    }
+    
+    public void stop() {
+        wheels.set(ControlMode.PercentOutput, 0);
+    }
     public void move() {
         SmartDashboard.putNumber("ClimbEncoder", climb.getSelectedSensorPosition());
-        if (OI.joy4.getRawButton(RobotMap.Controller.A)) {
+        if (OI.joy1.getRawButton(RobotMap.Controller.X)) {
             climbThings.set(Value.kForward);
         }
-        if (OI.joy4.getRawButton(RobotMap.Controller.B)) {
+        if (OI.joy1.getRawButton(RobotMap.Controller.Y)) {
             climbThings.set(Value.kReverse);
         }
-        climb.set(ControlMode.PercentOutput, OI.joy4.getRawAxis(RobotMap.Controller.LY));
-        wheels.set(ControlMode.PercentOutput, OI.joy4.getRawAxis(RobotMap.Controller.RY));
+        if (OI.joy1.getPOV() == RobotMap.Controller.UP) {
+            climb.set(ControlMode.PercentOutput, -75);
+        }
+        else if (OI.joy1.getPOV() == RobotMap.Controller.DOWN) {
+            climb.set(ControlMode.PercentOutput, 75);
+        }
+        else {
+            climb.set(ControlMode.PercentOutput, 0);
+        }
+        
+        if (OI.joy1.getRawButton(RobotMap.Controller.B)) {
+            wheels.set(ControlMode.PercentOutput, -100);
+        }
+        else {
+            wheels.set(ControlMode.PercentOutput, 0);
+        }
     }
 
+    public void smartDash() {
+        SmartDashboard.putNumber("Climb Encoder", climb.getSelectedSensorPosition());
+    }
     @Override
     protected double returnPIDInput() {
         return Robot.navxGyro.getTilt();
@@ -78,5 +105,6 @@ public class Climb extends PIDSubsystem{
     @Override
     protected void usePIDOutput(double output) {
         climb.set(ControlMode.PercentOutput, output);
+        SmartDashboard.putNumber("Encoder_output", output);
     }
 }
