@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
+//This should import it...
 import frc.robot.commands.auto.*;
 import frc.robot.profiling.PathFollower;
 import frc.robot.profiling.PathTracking;
@@ -48,12 +49,12 @@ public class Robot extends TimedRobot {
         succ = new Compressor();
         m_oi = new OI();
         autoChooser = new SendableChooser<Command>();
-        autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-        autoChooser.addOption("Left 2 Rocket", new Left2Rocket());
-        autoChooser.addOption("FL 2 Side Cargo", new Left2SideCargoShip());
-        autoChooser.addOption("Left 2 Front Cargo Back Rocket", new FLCargoBackRocket());
-        autoChooser.addOption("Right 2 Rocket", new Right2Rocket());
-        SmartDashboard.putData("autoChooser", autoChooser);
+        // autoChooser.setDefaultOption("Do Nothing", new DoNothing());
+        // autoChooser.addOption("Left 2 Rocket", new Left2Rocket());
+        // autoChooser.addOption("FL 2 Side Cargo", new Left2SideCargoShip());
+        // autoChooser.addOption("Left 2 Front Cargo Back Rocket", new FLCargoBackRocket());
+        // autoChooser.addOption("Right 2 Rocket", new Right2Rocket());
+        // SmartDashboard.putData("autoChooser", autoChooser);
         // autoChooser.addOption("Right 2 Rocket", new Left2SideCargoShip());
     }
 

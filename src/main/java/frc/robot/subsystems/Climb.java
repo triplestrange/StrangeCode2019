@@ -13,12 +13,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 
 public class Climb extends PIDSubsystem{
-
+//how about now?
+    CANSparkMax stiltMotor = new CANSparkMax(30, MotorType.kBrushless); 
+    
     TalonSRX climb = new TalonSRX(RobotMap.Climb.ARM_MOTOR);
     VictorSPX wheels = new VictorSPX(RobotMap.Climb.ROLL_WHEELS);
-    public DoubleSolenoid climbThings = new DoubleSolenoid(RobotMap.Climb.CLIMB_EXTEND, RobotMap.Climb.CLIMB_RETRACT);
     
     public Climb() {
         super("Climb", -0.1, 0, 0);
@@ -37,6 +44,11 @@ public class Climb extends PIDSubsystem{
         climb.config_kD(0, 0, RobotMap.DEFAULT_TIMEOUT);
         climb.configMotionCruiseVelocity(39875, RobotMap.DEFAULT_TIMEOUT);
         climb.configMotionAcceleration(39875/2, RobotMap.DEFAULT_TIMEOUT);
+        stiltMotor.setIdleMode(IdleMode.kBrake);
+        stiltMotor.setSmartCurrentLimit(40);
+        // stiltMotor.setOpenLoopRampRate(1);
+        stiltMotor.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
+        stiltMotor.burnFlash();
 
     }
 
@@ -50,7 +62,6 @@ public class Climb extends PIDSubsystem{
     }
 
     public void lift() {
-        climbThings.set(Value.kForward);
         setSetpoint(-8);
         enable();
     }
@@ -58,7 +69,7 @@ public class Climb extends PIDSubsystem{
     public void retract() {
         disable();
         wheels.set(ControlMode.PercentOutput, 0);
-        climbThings.set(Value.kReverse);
+        
     }
 
     public void RunWheels() {
@@ -68,29 +79,19 @@ public class Climb extends PIDSubsystem{
     public void stop() {
         wheels.set(ControlMode.PercentOutput, 0);
     }
+
     public void move() {
-        SmartDashboard.putNumber("ClimbEncoder", climb.getSelectedSensorPosition());
-        if (OI.joy1.getRawButton(RobotMap.Controller.X)) {
-            climbThings.set(Value.kForward);
+        if (Math.abs(OI.joy4.getRawAxis(RobotMap.Controller.LY)) > 0.1) {
+            stiltMotor.set(OI.joy4.getRawAxis(RobotMap.Controller.LY));
         }
-        if (OI.joy1.getRawButton(RobotMap.Controller.Y)) {
-            climbThings.set(Value.kReverse);
+        if (Math.abs(OI.joy4.getRawAxis(RobotMap.Controller.RY)) > 0.1) {
+            climb.set(ControlMode.PercentOutput,OI.joy4.getRawAxis(RobotMap.Controller.RY));
         }
-        if (OI.joy1.getPOV() == RobotMap.Controller.UP) {
-            climb.set(ControlMode.PercentOutput, -75);
+        if (Math.abs(OI.joy4.getRawAxis(RobotMap.Controller.LT)) > 0.1) {
+            wheels.set(ControlMode.PercentOutput,OI.joy4.getRawAxis(RobotMap.Controller.LT));
         }
-        else if (OI.joy1.getPOV() == RobotMap.Controller.DOWN) {
-            climb.set(ControlMode.PercentOutput, 75);
-        }
-        else {
-            climb.set(ControlMode.PercentOutput, 0);
-        }
-        
-        if (OI.joy1.getRawButton(RobotMap.Controller.B)) {
-            wheels.set(ControlMode.PercentOutput, -100);
-        }
-        else {
-            wheels.set(ControlMode.PercentOutput, 0);
+        if (Math.abs(OI.joy4.getRawAxis(RobotMap.Controller.RT)) > 0.1) {
+            wheels.set(ControlMode.PercentOutput, OI.joy4.getRawAxis(RobotMap.Controller.RT) * (-1));
         }
     }
 

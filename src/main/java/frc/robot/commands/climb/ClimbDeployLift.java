@@ -10,7 +10,7 @@ public class ClimbDeployLift extends Command {
 
     @Override
     protected void initialize() {
-        Robot.climb.lift();
+        Robot.climb.lift();  
     }
     @Override
     protected boolean isFinished() {
