@@ -11,7 +11,6 @@ public class Hatch extends Subsystem {
     Solenoid intakePiston = new Solenoid(RobotMap.Hatch.INTAKE_PISTON);
     DoubleSolenoid placingPiston = new DoubleSolenoid(RobotMap.Hatch.EXTEND, RobotMap.Hatch.RETRACT);
     public boolean hatchExtended, hatchOpen;
-
     public Hatch() {
         super();
     }

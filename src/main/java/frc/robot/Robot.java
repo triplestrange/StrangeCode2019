@@ -49,19 +49,17 @@ public class Robot extends TimedRobot {
         succ = new Compressor();
         m_oi = new OI();
         autoChooser = new SendableChooser<Command>();
-        // autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-        // autoChooser.addOption("Left 2 Rocket", new Left2Rocket());
-        // autoChooser.addOption("FL 2 Side Cargo", new Left2SideCargoShip());
-        // autoChooser.addOption("Left 2 Front Cargo Back Rocket", new FLCargoBackRocket());
-        // autoChooser.addOption("Right 2 Rocket", new Right2Rocket());
-        // SmartDashboard.putData("autoChooser", autoChooser);
-        // autoChooser.addOption("Right 2 Rocket", new Left2SideCargoShip());
+        autoChooser.setDefaultOption("Driver Control", new DoNothing());
+        autoChooser.addOption("Left 2 Rocket", new Left2Rocket());
+        autoChooser.addOption("FL 2 Side Cargo", new Left2SideCargoShip());
+        autoChooser.addOption("Left 2 Front Cargo Back Rocket", new FLCargoBackRocket());
+        autoChooser.addOption("Right 2 Rocket", new Right2Rocket());
+        autoChooser.addOption("Right 2 Rocket", new Left2SideCargoShip());
+        SmartDashboard.putData("Autonomous Chooser", autoChooser);
     }
 
     @Override
     public void robotPeriodic() {
-        autoCommand = (Command) autoChooser.getSelected();
-        SmartDashboard.putData("Selected Auto", autoCommand);
         visionNT = NetworkTableInstance.getDefault().getTable("ChickenVision");
         yawDetected = visionNT.getEntry("tapeDetected");
         tape = yawDetected.getBoolean(false);
@@ -83,7 +81,6 @@ public class Robot extends TimedRobot {
             led.set(-0.45);
         }
         climb.smartDash();
-        climb.move();
     }
 
     @Override
@@ -92,7 +89,9 @@ public class Robot extends TimedRobot {
         succ.setClosedLoopControl(false);
         succ.stop();
         navxGyro.reset();
+        autoCommand = (Command) autoChooser.getSelected();
         if (autoCommand != null) {
+            autoCommand.cancel();
             autoCommand.start();
         }
     }

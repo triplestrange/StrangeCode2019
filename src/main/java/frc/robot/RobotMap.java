@@ -83,7 +83,7 @@ public class RobotMap {
         public final static int elevator2 = 10; // CAN ID
 
         public final static double PEAK_LIMIT = 15; // Amps
-        public final static double PEAK_DURATION = 500; // milliseconds
+        public final static double PEAK_DURATION = 50; // milliseconds
         public final static double CONTINUOUS_LIMIT = 10; // Amps
         
         public static int START_POSITION = 14038;
@@ -109,11 +109,45 @@ public class RobotMap {
         public final static int MOTOR = 23;
     }
 
-    public static class Climb {
-        public final static int CLIMB_EXTEND = 6;
-        public final static int CLIMB_RETRACT = 7;
-        public final static int ARM_MOTOR = 11;
+    public static class ClimbArm {
+        public final static int ARM_MOTOR = 31;
+        public final static int ARM_LEVEL2 = 0;
+        public final static int ARM_LEVEL3 = 0;
+        // PID coefficients
+        public static final double kP = 5e-5; 
+        public static final double kI = 1e-6;
+        public static final double kD = 0; 
+        public static final double kIz = 0; 
+        public static final double kFF = 0.000156; 
+        public static final double kMaxOutput = 1; 
+        public static final double kMinOutput = -1;
+        public static final double maxRPM = 5700;
+
+        // Smart Motion Coefficients
+        public static final double maxVel = 2000; // rpm
+        public static final double minVel = -maxVel; // rpm
+        public static final double maxAcc = 1500;
+        public static final double allowedErr = 1;
+    }
+    public static class ClimbStilt {
         public final static int ROLL_WHEELS = 25;
-        public final static int PREPARE_CLIMB = 681756;
+        public final static int STILT_MOTOR = 30;
+        public final static int STILT_LEVEL2 = 0;
+        public final static int STILT_LEVEL3 = 0;
+        // PID coefficients
+        public static final double kP = 5e-5; 
+        public static final double kI = 1e-6;
+        public static final double kD = 0; 
+        public static final double kIz = 0; 
+        public static final double kFF = 0.000156; 
+        public static final double kMaxOutput = 1; 
+        public static final double kMinOutput = -1;
+        public static final double maxRPM = 5700;
+
+        // Smart Motion Coefficients
+        public static final double maxVel = 2000; // rpm
+        public static final double minVel = -maxVel; // rpm
+        public static final double maxAcc = 1500;
+        public static final double allowedErr = 1;
     }
 }

@@ -2,11 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 
-/**
- * Wrapper for the 6127V1A360L.5FS absolute angle encoder.
- * 
- * @author Duncan Page
- */
 public class AbsoluteEncoder extends AnalogInput {
     private double angleOffset;
     private boolean reversed = false;

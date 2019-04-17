@@ -18,4 +18,13 @@ public class CargoShortExtend extends Command {
     public boolean isFinished() {
         return true;
     }
+    @Override
+    public void end() {
+        Robot.cargo.retractShort();
+    }
+
+    @Override
+    public void interrupted() {
+        end();
+    }
 }

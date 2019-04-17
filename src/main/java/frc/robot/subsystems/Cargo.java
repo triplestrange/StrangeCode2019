@@ -18,6 +18,10 @@ public class Cargo extends Subsystem {
     private DoubleSolenoid longCargo = new DoubleSolenoid(1, 0);
     private Solenoid shortCargo = new Solenoid(5);
 
+    /*
+    * @param mCargoHandlerL Left Cargo Handler Motor
+    * @param mCargoHandlerR Right Gargo Handler Motor
+    */
     public Cargo() {
         super();
         mCargoHandlerL.setNeutralMode(NeutralMode.Brake);
