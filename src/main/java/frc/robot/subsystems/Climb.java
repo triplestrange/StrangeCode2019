@@ -38,7 +38,8 @@ public class Climb extends PIDSubsystem{
         super("Climb", -0.1, 0, 0);
         wheels.configFactoryDefault();
         wheels.setNeutralMode(NeutralMode.Brake);
-        armMotor.setIdleMode(IdleMode.kBrake);
+
+        armMotor.setIdleMode(IdleMode.kCoast);
         armMotor.setSmartCurrentLimit(40);
         armMotor.burnFlash();
         // set PID coefficients
@@ -79,7 +80,7 @@ public class Climb extends PIDSubsystem{
     }
 
     public void prepareLevel3() {
-        armPID.setReference(RobotMap.ClimbArm.ARM_LEVEL2, ControlType.kSmartMotion);
+        armPID.setReference(RobotMap.ClimbArm.ARM_LEVEL3, ControlType.kSmartMotion);
     }
 
     public void lift() {

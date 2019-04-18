@@ -12,9 +12,15 @@ public class ClimbArmLevel3 extends Command {
     protected void initialize() {
         Robot.climb.prepareLevel3();
     }
+    
+    @Override
+    protected void execute() {
+        Robot.climb.prepareLevel3();
+    }
+
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
     protected void end() {}
 }

@@ -18,9 +18,11 @@ public class OI {
     Button visionBack = new JoystickAxisButton(joy1, RobotMap.Controller.RT);
     Button slow = new EnabledButton(joy1, RobotMap.Controller.JOY_RIGHT);
     Button shortPiston = new EnabledButton(joy1, RobotMap.Controller.LEFT_FACE);
-    // Button prepare = new EnabledButton(joy1, RobotMap.Controller.X);
-    // Button climb = new EnabledButton(joy1, RobotMap.Controller.Y);
-    // Button retract = new EnabledButton(joy1, RobotMap.Controller.B);
+    
+    Button prepare2 = new EnabledButton(joy1, RobotMap.Controller.RIGHT_FACE);
+    Button prepare3 = new EnabledButton(joy1, RobotMap.Controller.X);
+    Button climb = new EnabledButton(joy1, RobotMap.Controller.Y);
+    Button retract = new EnabledButton(joy1, RobotMap.Controller.B);
 
     public static Joystick joy2 = new Joystick(1);
     Button hatchGrab = new EnabledButton(joy2, RobotMap.Controller.LEFT_BUMPER);
@@ -45,6 +47,8 @@ public class OI {
         visionFoward.whileHeld(new SwerveDriveVisionForwards());
         visionBack.whileHeld(new SwerveDriveVisionReverse());
         shortPiston.toggleWhenPressed(new CargoShortExtend());
+
+        prepare3.whenPressed(new ClimbPrepare3());
 
         hatchGrab.whenPressed(new HatchPistonGrab());
         hatchPlace.whenPressed(new HatchPistonPlace());

@@ -31,15 +31,15 @@ public class RobotMap {
         public static final int BR_ENCODER = 3;
         
         //Encoder offsets for real robot
-        // public final static double FL_ENC_OFFSET = 212.2+262.6;
-        // public final static double FR_ENC_OFFSET = 173.4+6;
-        // public final static double BL_ENC_OFFSET = 284.4+137+173;
-        // public final static double BR_ENC_OFFSET = 269.3+216;
+        public final static double FL_ENC_OFFSET = 212.2+262.6;
+        public final static double FR_ENC_OFFSET = 173.4+6;
+        public final static double BL_ENC_OFFSET = 284.4+137+173;
+        public final static double BR_ENC_OFFSET = 269.3+216;
 
-        public final static double FL_ENC_OFFSET = 275.5+324+42.8;
-        public final static double FR_ENC_OFFSET = 165+3.25;
-        public final static double BL_ENC_OFFSET = 142+4.5;
-        public final static double BR_ENC_OFFSET = 230+8.25;
+        // public final static double FL_ENC_OFFSET = 275.5+324+42.8;
+        // public final static double FR_ENC_OFFSET = 165+3.25;
+        // public final static double BL_ENC_OFFSET = 142+4.5;
+        // public final static double BR_ENC_OFFSET = 230+8.25;
 
         public static final boolean ENCODERS_REVERSED = false;
 
@@ -111,14 +111,14 @@ public class RobotMap {
 
     public static class ClimbArm {
         public final static int ARM_MOTOR = 31;
-        public final static int ARM_LEVEL2 = 0;
-        public final static int ARM_LEVEL3 = 0;
+        public final static int ARM_LEVEL2 = -205;
+        public final static int ARM_LEVEL3 = -160;
         // PID coefficients
-        public static final double kP = 5e-5; 
-        public static final double kI = 1e-6;
+        public static final double kP = 0.05; 
+        public static final double kI = 0;
         public static final double kD = 0; 
         public static final double kIz = 0; 
-        public static final double kFF = 0.000156; 
+        public static final double kFF = 1; 
         public static final double kMaxOutput = 1; 
         public static final double kMinOutput = -1;
         public static final double maxRPM = 5700;
