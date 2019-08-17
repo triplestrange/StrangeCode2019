@@ -5,12 +5,12 @@ import frc.robot.Robot;
 
 public class ClimbRetract extends Command {
     public ClimbRetract() {
-        requires(Robot.climb);
+        requires(Robot.stilt);
     }
 
     @Override
     protected void initialize() {
-        Robot.climb.retract();
+        Robot.stilt.retract();
     }
     @Override
     protected boolean isFinished() {

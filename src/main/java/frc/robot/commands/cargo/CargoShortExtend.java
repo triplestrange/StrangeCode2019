@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CargoShortExtend extends Command {
     
     public CargoShortExtend() {
-        requires(Robot.cargo);
     }
 
     @Override
@@ -16,7 +15,7 @@ public class CargoShortExtend extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
     @Override
     public void end() {

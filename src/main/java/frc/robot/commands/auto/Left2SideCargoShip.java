@@ -18,7 +18,7 @@ public class Left2SideCargoShip extends CommandGroup {
             new SwerveWaypoint(-242, 164, Pathfinder.d2r(90), 360),
             new SwerveWaypoint(-224, 250, Pathfinder.d2r(70), 360)
         ));
-        addSequential(new SwerveDriveVisionForwardsAuto(1.5, 27.5));
+        addSequential(new SwerveDriveVisionForwardsAuto(3.5, 15));
         addSequential(new HatchPistonPlace());
         addSequential(new SwerveDriveVisionReverseAuto(0.75, 25));
         addSequential(new PathCommand(-225, 250,

@@ -31,10 +31,10 @@ public class RobotMap {
         public static final int BR_ENCODER = 3;
         
         //Encoder offsets for real robot
-        public final static double FL_ENC_OFFSET = 212.2+262.6;
-        public final static double FR_ENC_OFFSET = 173.4+6;
-        public final static double BL_ENC_OFFSET = 284.4+137+173;
-        public final static double BR_ENC_OFFSET = 269.3+216;
+        public final static double FL_ENC_OFFSET = 183;
+        public final static double FR_ENC_OFFSET = 179;
+        public final static double BL_ENC_OFFSET = 221;
+        public final static double BR_ENC_OFFSET = 241;
 
         // public final static double FL_ENC_OFFSET = 275.5+324+42.8;
         // public final static double FR_ENC_OFFSET = 165+3.25;
@@ -47,8 +47,8 @@ public class RobotMap {
         public static final double WHEEL_BASE_LENGTH = 19.25;
         public static final double WHEEL_BASE_WIDTH = 27.254;
 
-        public static final double SPEED = 90;
-        public static final double TURN_RATE = 90;
+        public static final double SPEED = 40;
+        public static final double TURN_RATE = 50;
     }
 
     public static class Controller {
@@ -112,42 +112,12 @@ public class RobotMap {
     public static class ClimbArm {
         public final static int ARM_MOTOR = 31;
         public final static int ARM_LEVEL2 = -205;
-        public final static int ARM_LEVEL3 = -160;
-        // PID coefficients
-        public static final double kP = 0.05; 
-        public static final double kI = 0;
-        public static final double kD = 0; 
-        public static final double kIz = 0; 
-        public static final double kFF = 1; 
-        public static final double kMaxOutput = 1; 
-        public static final double kMinOutput = -1;
-        public static final double maxRPM = 5700;
-
-        // Smart Motion Coefficients
-        public static final double maxVel = 2000; // rpm
-        public static final double minVel = -maxVel; // rpm
-        public static final double maxAcc = 1500;
-        public static final double allowedErr = 1;
+        public final static int ARM_LEVEL3 = -170;
     }
     public static class ClimbStilt {
         public final static int ROLL_WHEELS = 25;
         public final static int STILT_MOTOR = 30;
-        public final static int STILT_LEVEL2 = 0;
-        public final static int STILT_LEVEL3 = 0;
-        // PID coefficients
-        public static final double kP = 5e-5; 
-        public static final double kI = 1e-6;
-        public static final double kD = 0; 
-        public static final double kIz = 0; 
-        public static final double kFF = 0.000156; 
-        public static final double kMaxOutput = 1; 
-        public static final double kMinOutput = -1;
-        public static final double maxRPM = 5700;
-
-        // Smart Motion Coefficients
-        public static final double maxVel = 2000; // rpm
-        public static final double minVel = -maxVel; // rpm
-        public static final double maxAcc = 1500;
-        public static final double allowedErr = 1;
+        public final static int STILT_LEVEL2 = -70;
+        public final static int STILT_LEVEL3 = -175;
     }
 }

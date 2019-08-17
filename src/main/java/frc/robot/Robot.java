@@ -22,7 +22,8 @@ public class Robot extends TimedRobot {
     public static Elevator elevator;
     public static Gyro navxGyro;
     public static SwerveDrive swerve;
-    public static Climb climb;
+    public static ClimbArm arm;
+    public static ClimbStilt stilt;
     public static Compressor succ;
     public static PathTracking path;
     public static PathFollower follower;
@@ -45,7 +46,8 @@ public class Robot extends TimedRobot {
         follower = new PathFollower();
         cargo = new Cargo();
         led = new Spark(0);
-        climb = new Climb();
+        arm = new ClimbArm();
+        stilt = new ClimbStilt();
         succ = new Compressor();
         m_oi = new OI();
         autoChooser = new SendableChooser<Command>();
@@ -80,7 +82,8 @@ public class Robot extends TimedRobot {
         } else {
             led.set(-0.45);
         }
-        climb.smartDash();
+        arm.smartDash();
+        stilt.smartDash();
     }
 
     @Override

@@ -3,14 +3,14 @@ package frc.robot.commands.climb;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ClimbStilts3 extends Command {
-    public ClimbStilts3() {
-        requires(Robot.stilt);
+public class ArmStop extends Command {
+    public ArmStop() {
+        requires(Robot.arm);
     }
 
     @Override
     protected void initialize() {
-        Robot.stilt.level3();  
+        Robot.arm.stopArm();
     }
     @Override
     protected boolean isFinished() {

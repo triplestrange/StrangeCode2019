@@ -19,7 +19,7 @@ public class ClimbRunWheels extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
     protected void execute() {
-      Robot.climb.runWheels(OI.joy1.getRawAxis(RobotMap.Controller.RY));
+      Robot.stilt.runWheels(OI.joy1.getRawAxis(RobotMap.Controller.RY));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -31,13 +31,13 @@ public class ClimbRunWheels extends Command {
   // Called once after isFinished returns true
   @Override
     protected void end() {
-        Robot.climb.stopWheels();
+        Robot.stilt.stopWheels();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
     protected void interrupted() {
-        Robot.climb.stopWheels();
+        Robot.stilt.stopWheels();
   }
 }

@@ -5,12 +5,12 @@ import frc.robot.Robot;
 
 public class ClimbStilts2 extends Command {
     public ClimbStilts2() {
-        requires(Robot.climb);
+        requires(Robot.stilt);
     }
 
     @Override
     protected void initialize() {
-        Robot.climb.level2();  
+        Robot.stilt.level2();  
     }
     @Override
     protected boolean isFinished() {
