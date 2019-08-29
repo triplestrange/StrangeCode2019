@@ -5,15 +5,21 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CargoIntakeIn extends Command {
-    
+public class CargoIntake extends Command {
+
     public double y;
-    public CargoIntakeIn() {
+    private int dir;
+
+    public CargoIntake(int direction) {
+        dir = direction;
     }
 
     @Override
     public void execute() {
-        y = OI.joy2.getRawAxis(RobotMap.Controller.LT);
+        if (dir == 1)
+            y = OI.joy2.getRawAxis(RobotMap.Controller.LT);
+        else if (dir == -1)
+            y = OI.joy2.getRawAxis(RobotMap.Controller.RT)*(-1);
         if (Robot.elevator.clearForCargo() && !Robot.hatch.hatchExtended)
             Robot.cargo.rollIntake(y);
     }
@@ -22,7 +28,7 @@ public class CargoIntakeIn extends Command {
     public boolean isFinished() {
         return Math.abs(y) < 0.1;
     }
-    
+
     public void end() {
         Robot.cargo.rollIntake(0);
     }

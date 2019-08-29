@@ -10,7 +10,7 @@ public class ElevatorReset extends Command {
 
     @Override
     public void execute() {
-        Robot.elevator.resetEncoder();
+        Robot.elevator.resetEncoder(0);
     }
 
     @Override

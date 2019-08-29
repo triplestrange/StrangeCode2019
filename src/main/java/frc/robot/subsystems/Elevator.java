@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
-    public WPI_TalonSRX elevator1 = new WPI_TalonSRX(RobotMap.Elevator.elevator1);
+    private WPI_TalonSRX elevator1 = new WPI_TalonSRX(RobotMap.Elevator.elevator1);
     private WPI_VictorSPX elevator2 = new WPI_VictorSPX(RobotMap.Elevator.elevator2);
     private boolean elevatorMM = false;
 
@@ -54,46 +54,6 @@ public class Elevator extends Subsystem {
         elevator2.setInverted(InvertType.FollowMaster);
     }
 
-
-    public void smartDash() {
-        SmartDashboard.putNumber("Elevator Encoder", getDistance());
-        SmartDashboard.putBoolean("Clear for Cargo", clearForCargo());
-        SmartDashboard.putBoolean("Clear for Hatch", clearForHatch());
-        SmartDashboard.putBoolean("Is MM running", getmm());
-    }
-
-    public void cargoRocket1() {
-        startMM(RobotMap.Elevator.CARGO_1ROCKET);
-    }
-
-    public void cargoRocket2() {
-        startMM(RobotMap.Elevator.CARGO_2ROCKET);
-    }
-
-    public void cargoRocket3() {
-        startMM(RobotMap.Elevator.CARGO_3ROCKET);
-    }
-
-    public void cargoShip() {
-        startMM(RobotMap.Elevator.CARGO_SHIP);
-    }
-
-    public void hatchRocket1() {
-        startMM(RobotMap.Elevator.HATCH_1ROCKET);
-    }
-
-    public void hatchRocket2() {
-        startMM(RobotMap.Elevator.HATCH_2ROCKET);
-    }
-
-    public void hatchRocket3() {
-        startMM(RobotMap.Elevator.HATCH_3ROCKET);
-    }
-
-    public void cargoIntake() {
-        startMM(0);
-    }
-
     public void joyControl() {
         double y = OI.joy2.getRawAxis(RobotMap.Controller.LY);
         if (Math.abs(y) > 0.15) {
@@ -104,17 +64,28 @@ public class Elevator extends Subsystem {
         }
     }
 
-    public void resetEncoder() {
-        elevator1.setSelectedSensorPosition(0, 0, RobotMap.DEFAULT_TIMEOUT);
+    public void startMM(double setpoint) {
+        elevator1.set(ControlMode.MotionMagic, setpoint);
+        elevatorMM = true;
     }
 
     public void stop() {
         elevator1.set(0);
     }
 
-    private void startMM(double setpoint) {
-        elevator1.set(ControlMode.MotionMagic, setpoint);
-        elevatorMM = true;
+    public void resetEncoder(int startPos) {
+        elevator1.setSelectedSensorPosition(startPos, 0, RobotMap.DEFAULT_TIMEOUT);
+    }
+
+    public void smartDash() {
+        SmartDashboard.putNumber("Elevator Encoder", getDistance());
+        SmartDashboard.putBoolean("Clear for Cargo", clearForCargo());
+        SmartDashboard.putBoolean("Clear for Hatch", clearForHatch());
+        SmartDashboard.putBoolean("Is MM running", getmm());
+    }
+
+    public boolean getmm() {
+        return elevatorMM;
     }
 
     public double getDistance() {
@@ -127,10 +98,6 @@ public class Elevator extends Subsystem {
 
     public boolean clearForHatch() {
         return getDistance() > (RobotMap.Elevator.CARGO_1ROCKET) / 2;
-    }
-
-    public boolean getmm() {
-        return elevatorMM;
     }
 
     @Override

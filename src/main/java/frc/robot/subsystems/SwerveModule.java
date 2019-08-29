@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -49,7 +48,6 @@ public class SwerveModule implements PIDSource, PIDOutput {
         driveController.setIdleMode(IdleMode.kBrake);
         driveController.setSmartCurrentLimit(30);
         driveController.setOpenLoopRampRate(0.25);
-        driveController.setParameter(ConfigParameter.kCtrlType, ControlType.kDutyCycle.value);
         driveController.burnFlash();
         encoder = driveController.getEncoder();
         resetEncoder();

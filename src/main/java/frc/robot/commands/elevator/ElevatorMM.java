@@ -3,15 +3,16 @@ package frc.robot.commands.elevator;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorHatch2 extends Command {
-
-    public ElevatorHatch2() {
+public class ElevatorMM extends Command {
+    private double position;
+    public ElevatorMM(double setpoint) {
         requires(Robot.elevator);
+        position = setpoint;
     }
 
     @Override
     public void execute() {
-        Robot.elevator.hatchRocket2();
+        Robot.elevator.startMM(position);
     }
 
     @Override

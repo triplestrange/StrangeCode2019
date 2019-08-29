@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
-//This should import it...
 import frc.robot.commands.auto.*;
 import frc.robot.profiling.PathFollower;
 import frc.robot.profiling.PathTracking;
@@ -62,6 +61,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        Scheduler.getInstance().run();
         visionNT = NetworkTableInstance.getDefault().getTable("ChickenVision");
         yawDetected = visionNT.getEntry("tapeDetected");
         tape = yawDetected.getBoolean(false);
@@ -69,10 +69,11 @@ public class Robot extends TimedRobot {
         yaw = yawRaw.getDouble(0);
         SmartDashboard.putNumber("yawval", yaw);
         SmartDashboard.putBoolean("tapeval", tape);
-        path.update();
         swerve.smartDash();
         elevator.smartDash();
-        Scheduler.getInstance().run();
+        arm.smartDash();
+        stilt.smartDash();
+        path.update();
         if (hatch.hatchExtended && hatch.hatchOpen) {
             led.set(-0.23);
         } else if (hatch.hatchExtended && !hatch.hatchOpen) {
@@ -82,13 +83,11 @@ public class Robot extends TimedRobot {
         } else {
             led.set(-0.45);
         }
-        arm.smartDash();
-        stilt.smartDash();
     }
 
     @Override
     public void autonomousInit() {
-        Robot.elevator.elevator1.setSelectedSensorPosition(RobotMap.Elevator.START_POSITION, 0, RobotMap.DEFAULT_TIMEOUT);
+        elevator.resetEncoder(RobotMap.Elevator.START_POSITION);
         succ.setClosedLoopControl(false);
         succ.stop();
         navxGyro.reset();
@@ -97,10 +96,6 @@ public class Robot extends TimedRobot {
             autoCommand.cancel();
             autoCommand.start();
         }
-    }
-
-    @Override
-    public void autonomousPeriodic() {
     }
 
     @Override
@@ -113,22 +108,10 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {
-    }
-
-    @Override
     public void disabledInit() {
         swerve.setCoast();
         if (autoCommand != null) {
             autoCommand.cancel();
         }
-    }
-
-    @Override
-    public void disabledPeriodic() {
-    }
-
-    @Override
-    public void testPeriodic() {
     }
 }

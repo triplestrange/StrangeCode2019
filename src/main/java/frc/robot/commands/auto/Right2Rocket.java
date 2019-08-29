@@ -1,8 +1,9 @@
 package frc.robot.commands.auto;
 
 import frc.robot.profiling.SwerveWaypoint;
+import frc.robot.RobotMap.Elevator;
 import frc.robot.commands.swerve.*;
-import frc.robot.commands.elevator.ElevatorHatch1;
+import frc.robot.commands.elevator.*;
 import frc.robot.commands.hatch.*;
 import jaci.pathfinder.Pathfinder;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -11,7 +12,7 @@ public class Right2Rocket extends CommandGroup {
     public Right2Rocket() {
         addParallel(new HatchPistonGrab());
         addParallel(new HatchPistonExtend());
-        addParallel(new ElevatorHatch1());
+        addParallel(new ElevatorMM(Elevator.HATCH_2ROCKET));
         addSequential(new PathCommand(-110, 68, 
                 new SwerveWaypoint(-110, 68, Pathfinder.d2r(90), 270),
                 new SwerveWaypoint(-110, 110, Pathfinder.d2r(90), 270),
