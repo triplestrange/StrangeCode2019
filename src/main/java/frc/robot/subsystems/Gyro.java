@@ -11,7 +11,7 @@ public class Gyro implements PIDSource{
 
     //Offset to start the robot facing on the right
     //TODO make a selector on the Smart Dashboard for which direction we are facing
-    private static double offset = 270;
+    private static double offset = 0;
 
     public Gyro() {
         super();
@@ -31,7 +31,7 @@ public class Gyro implements PIDSource{
 
     public void reset() {
         gyro.zeroYaw();
-        offset = 270;
+        offset = 0;
     }
 
     public void set(double angle) {

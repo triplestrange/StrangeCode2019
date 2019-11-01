@@ -239,7 +239,7 @@ public class SwerveDrive extends Subsystem implements PIDSource, PIDOutput {
         this.visionOn = !visionOn;
     }
 
-    public void move() {
+public void move() {
         double x = (OI.joy1.getRawAxis(0));
         double y = (OI.joy1.getRawAxis(1));
         double z = (OI.joy1.getRawAxis(4));

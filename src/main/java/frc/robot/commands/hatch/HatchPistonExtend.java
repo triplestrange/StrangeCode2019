@@ -14,11 +14,12 @@ public class HatchPistonExtend extends Command {
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     @Override
     protected void end() {
+        Robot.hatch.retract();
     }
 
     @Override

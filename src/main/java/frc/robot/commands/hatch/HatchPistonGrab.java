@@ -5,16 +5,19 @@ import frc.robot.Robot;
 
 public class HatchPistonGrab extends Command {
     public HatchPistonGrab() {
-        requires(Robot.hatch);
     }
 
     @Override
     protected void initialize() {
-        Robot.hatch.grab();
+        Robot.hatch.in();
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
+    }
+
+    protected void end() {
+        Robot.hatch.stop();
     }
 }

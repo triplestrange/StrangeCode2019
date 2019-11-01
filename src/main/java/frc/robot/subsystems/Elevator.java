@@ -55,10 +55,13 @@ public class Elevator extends Subsystem {
     }
 
     public void joyControl() {
-        double y = OI.joy2.getRawAxis(RobotMap.Controller.LY);
-        if (Math.abs(y) > 0.15) {
+        double pov = OI.joy1.getPOV();
+        if (pov == RobotMap.Controller.UP) {
             elevatorMM = false;
-            elevator1.set(-0.5 * y);
+            elevator1.set(0.25);
+        } else if (pov == RobotMap.Controller.DOWN) {
+            elevatorMM = false;
+            elevator1.set(-0.2);
         } else if (elevatorMM == false) {
             elevator1.set(0);
         }
@@ -79,8 +82,6 @@ public class Elevator extends Subsystem {
 
     public void smartDash() {
         SmartDashboard.putNumber("Elevator Encoder", getDistance());
-        SmartDashboard.putBoolean("Clear for Cargo", clearForCargo());
-        SmartDashboard.putBoolean("Clear for Hatch", clearForHatch());
         SmartDashboard.putBoolean("Is MM running", getmm());
     }
 
@@ -90,14 +91,6 @@ public class Elevator extends Subsystem {
 
     public double getDistance() {
         return elevator1.getSelectedSensorPosition(0);
-    }
-
-    public boolean clearForCargo() {
-        return getDistance() < RobotMap.Elevator.CARGO_1ROCKET + 2000;
-    }
-
-    public boolean clearForHatch() {
-        return getDistance() > (RobotMap.Elevator.CARGO_1ROCKET) / 2;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class ElevatorWithJoy extends Command {
 
     @Override
     protected void end() {
-        Robot.elevator.stop();
+        // Robot.elevator.stop();
     }
 
     @Override

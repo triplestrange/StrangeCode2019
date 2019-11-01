@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -46,8 +45,8 @@ public class SwerveModule implements PIDSource, PIDOutput {
         steerPID.disable();
         steerController.setNeutralMode(NeutralMode.Brake);
         driveController.setIdleMode(IdleMode.kBrake);
-        driveController.setSmartCurrentLimit(30);
-        driveController.setOpenLoopRampRate(0.25);
+        driveController.setSmartCurrentLimit(40);
+        driveController.setOpenLoopRampRate(0.1);
         driveController.burnFlash();
         encoder = driveController.getEncoder();
         resetEncoder();
